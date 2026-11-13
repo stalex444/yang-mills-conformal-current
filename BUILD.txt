@@ -14,10 +14,11 @@ This file holds five records, all made on 2026-11-13:
             AxiomsOnConstructed.lean, compiled with `lean -o` against the restored compiled build
             of the release, as in record 4; the commit after it (corrections after review:
             two docstrings of PDTAdapters/OnConstructed.lean and the text files), with pass B
-            below; and the commit after that (README.md only, nothing recompiled), under
+            below; the commit after that (README.md only, nothing recompiled), under
             "AFTER PASS B"; and the commit after that (corrections from a whole-repository read:
             the module docstring and one theorem docstring of PDTAdapters/OnHeadline.lean, and
-            the text files), with pass C below. It comes first.
+            the text files), with pass C below; and the commit after that (README.md and this
+            file only, nothing recompiled), under "AFTER PASS C". It comes first.
   RECORD 4  the commit that follows 359eaf6d: adds PDTAdapters/OnHeadline.lean and
             AxiomsOnHeadline.lean, and compiles every module of the library with `lean -o`
             against a restored compiled build of the release, without Lake; and the commit after
@@ -183,8 +184,8 @@ compiled Conformal, Divergence, General, TraceStep and OnHeadline modules of the
 
 AFTER PASS B (2026-11-13, a second read of the commit above): README.md only. One first-screen
 sentence split into three and one parenthesis added naming PDTAdapters.constructed_dilation; the
-bullet on agent assistance and the bullet "The name" under "Provenance and licences", in the
-author's wording; one pointer line to the latter near the top. No Lean file changed; nothing was
+bullet on agent assistance and the bullet "The name" under "Provenance and licences", in wording
+the author approved; one pointer line to the latter near the top. No Lean file changed; nothing was
 recompiled; SHA256SUMS regenerated for README.md and this file.
 
 PASS C (2026-11-13, 20:23:59Z to 20:24:44Z), for the commit after the one above (corrections from
@@ -216,7 +217,16 @@ import order:
   concern did not change). The build under "Build" in README.md was not re-run: none of the nine
   files it uses changed (cmp against the working checkout of records 2 and 3: identical).
 
-HASHES of the two added files (sha256), after pass B; the other Lean files are those of record 4,
+AFTER PASS C (2026-11-13, a second read of the commit above): README.md and this file only. In
+README.md: the count sentence on the release names not among the 441 built (three further names
+named), the pair `opposed s` named in one first-screen sentence, "identity 1 below" for "the first
+identity", and, on the author's word, "and the README" removed from the bullet on agent
+assistance and the citation in the bullet "The name" made exact (the ratio follows from
+two formulas the cited paper prints). In this file: two wording corrections in the index and the hash heading, and "in
+wording the author approved" for "in the author's wording". No Lean file changed; nothing was
+recompiled; SHA256SUMS regenerated for README.md and this file.
+
+HASHES (sha256) of the two added files after pass B, and of PDTAdapters/OnHeadline.lean after pass C; the other Lean files are those of record 4,
 except PDTAdapters/OnHeadline.lean, changed in pass C (docstrings only; it was
 10a932834e15b5ac663a16c926ca01406614c7cf649568e94583cee3ae4bbd9b before pass C).
 OnConstructed.lean was 131d974df8f90394029b2a04ed58aa48cc4b188694d3c53731adbc4ca370e555 before

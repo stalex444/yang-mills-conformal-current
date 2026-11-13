@@ -9,7 +9,7 @@ The name `PDTAdapters` is explained under "Provenance and licences".
 
 Every theorem here is a consequence of the release's definitions and theorems; none is used by, or changes, any proof of the release.
 
-Every declaration depends on `propext`, `Classical.choice` and `Quot.sound` only (`Axioms.lean`, `AxiomsOnHeadline.lean`, `AxiomsOnConstructed.lean`; the output is in `BUILD.txt`). `lake build PDTAdapters`, in a checkout of the release prepared as under "Build", prints the axioms of 34 of the theorems. The release's `YM.Work.A01.divergence` is the case `∂·V = 0` of the first identity (an `example … := rfl` in `PDTAdapters/Divergence.lean` checks that the two statements are definitionally equal), and every clause of the release's `YangMills.constructed` is a conjunct of `PDTAdapters.constructed_dilation` (`PDTAdapters.constructed_of_constructed_dilation`).
+Every declaration depends on `propext`, `Classical.choice` and `Quot.sound` only (`Axioms.lean`, `AxiomsOnHeadline.lean`, `AxiomsOnConstructed.lean`; the output is in `BUILD.txt`). `lake build PDTAdapters`, in a checkout of the release prepared as under "Build", prints the axioms of 34 of the theorems. The release's `YM.Work.A01.divergence` is the case `∂·V = 0` of identity 1 below (an `example … := rfl` in `PDTAdapters/Divergence.lean` checks that the two statements are definitionally equal), and every clause of the release's `YangMills.constructed` is a conjunct of `PDTAdapters.constructed_dilation` (`PDTAdapters.constructed_of_constructed_dilation`).
 
 ## The results
 
@@ -71,7 +71,7 @@ same witness. At the release's `YangMills.su2` with `b = 1` the statement holds 
 (`PDTAdapters.su2_dilation_not_conserved`). These rest on `PDTAdapters/OnHeadline.lean`, which
 proves that for every `F` satisfying the release's `YM.Nonperturbative.Headline.TraceExclusions F`, the
 divergence of the dilation current in the selected phase, against the centred trace spectator,
-times `s⁸ (log s⁻¹)²` tends to `Trace.Verse.award G` as `s → 0⁺`, and that it is nonzero at every
+at the pair `opposed s`, times `s⁸ (log s⁻¹)²` tends to `Trace.Verse.award G` as `s → 0⁺`, and that it is nonzero at every
 separated pair closer than some `r₀ > 0` (`PDTAdapters.headline_dilation_rate`,
 `PDTAdapters.headline_dilation_not_conserved_at`). Neither module is imported by the root; both
 are checked against the restored public compiled build of the release (records 4 and 5 of
@@ -123,8 +123,9 @@ Euclidean signature, dimension four. Paths are in the release at the commit abov
 | `YM.Maxwell.Free.Killing` | `Maxwell.Free.Killing v` | `YM/Next/MAXWELL/Current.lean` | for `v : Axis → E4 → ℝ`: smooth components, `∂_a v_b = −∂_b v_a` for `a ≠ b`, and `∂_a v_a = ∂_b v_b` for all `a`, `b` |
 
 Every name in the first column resolves in the environment built for this library. Ten more
-names of the release are cited in this README whose modules are not among the 441 that the
-build under "Build" compiles: `YM.Trace.Verse.axis_shape` and `YM.Trace.Verse.award`
+names of the release, whose modules are not among the 441 that the build under "Build"
+compiles, are cited in this README, besides `YangMills.GaugeGroup`, `YangMills.su2` and
+`YangMills.su2Simple`, which are treated at the end of this paragraph: `YM.Trace.Verse.axis_shape` and `YM.Trace.Verse.award`
 (`YM/TraceExtension/Verse/Day.lean`), `YM.Nonperturbative.Headline.TraceExclusions`
 (`YM/Nonperturbative/HeadlineSpec.lean`), `YangMills.constructed` (`Construction.lean`),
 `YM.Trace.trace_free` (`YM/Trace/FreeScalar.lean`), `YM.Trace.rho`
@@ -495,7 +496,8 @@ The source contains no `sorry`, `admit`, `axiom`, `native_decide`, `unsafe`, `im
   Q > 1), with no free parameters. It writes the fine-structure constant as α⁻¹ = (ρQ)¹⁵/π², with
   15 = dim so(4,2), and the ratio of the electron's electromagnetic and gravitational couplings as
   α/α_G = (ρQ)²⁰⁹(2Q − 1)/(π²Q²), with 209 = 15² − 15 − 1
-  ([doi:10.5281/zenodo.20417378](https://doi.org/10.5281/zenodo.20417378), §§3–4). For the
+  ([doi:10.5281/zenodo.20417378](https://doi.org/10.5281/zenodo.20417378), §3, Table 2, and §4;
+  the ratio follows from the α⁻¹ of Table 2 and the α_G of §4). For the
   gravitational exponent, the programme identifies that 15 with the dimension of the space of
   conformal Killing fields of four-dimensional flat space, the fields that turn every conserved,
   symmetric, trace-free stress tensor into a conserved current (statements 3 and 7 of the
@@ -504,7 +506,7 @@ The source contains no `sorry`, `admit`, `axiom`, `native_decide`, `unsafe`, `im
 - **Agent assistance.** The Lean proofs and this README were written by Claude (Anthropic) agent
   sessions in Claude Code, directed by the author. Every theorem is checked by the Lean kernel,
   and each statement was reviewed by a separate agent session that had not written it. The author
-  read the theorem statements and the README before publication. No other model was used. The
+  read the theorem statements before publication. No other model was used. The
   evidence offered is what can be re-run: the builds and
   axiom listing in `BUILD.txt`, the `example … := rfl` in `PDTAdapters/Divergence.lean`, and the
   control `rate_zero_control`. The builds recorded in `BUILD.txt` were run on the author's
