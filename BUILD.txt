@@ -9,16 +9,67 @@ checkout of the release, with two lines appended to the release's lakefile.toml:
     [[lean_lib]]
     name = "PDTAdapters"
 
-This file holds two records, both made on 2026-11-13:
+This file holds three records, all made on 2026-11-13:
 
-  RECORD 2  the current version of the library: the commit that follows 41856c2f and adds the
-            module PDTAdapters/OnFinal.lean. It comes first.
+  RECORD 3  the commit that follows 52b2bd2c: docstring changes in PDTAdapters/OnFinal.lean and
+            PDTAdapters/FreeControl.lean, with the rebuild and checks run for it. It comes first.
+            The AXIOMS listing of record 2 and its HASHES table (updated for the two files) apply
+            to this commit.
+  RECORD 2  commit 52b2bd2c, the commit that follows 41856c2f and adds the module
+            PDTAdapters/OnFinal.lean.
   RECORD 1  commit 41856c2f, the earlier public commit, including its clean-checkout build. It is
             kept below as it was written; its counts, job numbers, hashes and line numbers are
             those of that commit.
 
 ================================================================================================
-RECORD 2 -- the current version (2026-11-13, 15:33Z to 15:40Z)
+RECORD 3 -- docstrings of three theorems (2026-11-13, 17:10Z to 17:11Z)
+================================================================================================
+
+What changed since commit 52b2bd2c, in the Lean files (docstrings only):
+  - PDTAdapters/OnFinal.lean: the docstring of final_stressTrace_eq_zero_iff loses its last
+    sentence; the docstring of final_dilation_divergence_center names reflexivity (S.respects S)
+    among the supplied hypotheses.
+  - PDTAdapters/FreeControl.lean: the docstring of polStress_trace says that it has the statement
+    of the release's YM.Trace.trace_free (YM/Trace/FreeScalar.lean, line 23), with G explicit.
+    This was compared as source text: in that file `G` is a section variable `{G : Gauge}`, and
+    `polStress` resolves to YM.Maxwell.Free.polStress (the only declaration of that name in the
+    release). YM.Trace.trace_free is not in the built environment, so the two statements were not
+    compared in the kernel.
+  With comments removed, both files are identical to their text at 52b2bd2c (diff). No statement,
+  proof, name or import changed. The other six library files and Axioms.lean are unchanged.
+  README.md, BUILD.txt and SHA256SUMS also changed.
+
+Working checkout of record 2 (release commit 3456e5e7; `git status --short` and the lakefile
+diff as in record 2). The two changed files were copied in; the other library files and
+Axioms.lean there are byte-identical to this repository (cmp, all nine).
+
+  lake build PDTAdapters                 (start 17:10:30Z, 11 s)
+    exit code 0, "Build completed successfully (3728 jobs).", no warning and no error line.
+    Recompiled: PDTAdapters.OnFinal and the root. The root printed 34 `#print axioms` lines, each
+    [propext, Classical.choice, Quot.sound].
+  lake build PDTAdapters.FreeControl     (start 17:10:48Z, 5 s)
+    exit code 0, "Build completed successfully (3616 jobs).". Recompiled: PDTAdapters.FreeControl.
+  lake env lean -DmaxHeartbeats=0 -DmaxRecDepth=4096 Axioms.lean   (start 17:10:57Z)
+    exit code 0, 54 lines, each [propext, Classical.choice, Quot.sound]; the output is identical
+    (diff) to the AXIOMS listing of record 2, names and order.
+  lake env lean -DmaxHeartbeats=0 -DmaxRecDepth=4096 PDTAdapters/Divergence.lean
+    exit code 0, no output (the `example ... := rfl` at line 94 elaborates).
+  A scratch file importing PDTAdapters and PDTAdapters.FreeControl, run with lake env lean:
+    example : @PDTAdapters.divergence_of_conformal_killing = @YM.Work.A01.divergence := rfl
+    accepted (exit 0). The ten names that README.md says are read from the release's source are
+    absent from this environment (Lean.Environment.contains), YM.EveryPhase.Stress.tide_div and
+    YM.EveryPhase.Stress.tensor_conserved among them; as positive controls,
+    YM.Maxwell.Free.polStress, YM.Work.A01.divergence and three names of this library are
+    present.
+  Compiled modules under .lake/build/lib/lean/YM afterwards: 441.
+
+Not re-run in this record: the negative control and the other checks of record 2, the
+re-elaboration of the other modules, and the import closures. Previous hashes (52b2bd2c):
+  b81a5eabf3757f6346a66ba6c2c0c205e7f8145d3dbfacc8f8c43ab6b6c4d50b  PDTAdapters/OnFinal.lean
+  3d1c4075d232ff536738e118526decf09cc27871c55e00dda5fe2d98b88120f1  PDTAdapters/FreeControl.lean
+
+================================================================================================
+RECORD 2 -- the current version (2026-11-13, 15:33Z to 15:37Z)
 ================================================================================================
 
 Machine: macOS 26.6.2, arm64 (Apple M4, 10 cores).
@@ -40,7 +91,7 @@ What changed since commit 41856c2f:
 
 Where it was built. This record is an INCREMENTAL build in the working checkout of the release
 in which the library was written, not a clean checkout. The clean-checkout procedure of record 1
-was not repeated for this commit: it needs about 1.1 GiB more disk than was free.
+was not repeated for this commit, for lack of free disk space on the build machine.
 
 ------------------------------------------------------------------------------------------------
 WORKING CHECKOUT -- incremental build and re-elaboration
@@ -93,8 +144,9 @@ CHECKS RE-RUN (working checkout, in a file importing PDTAdapters and PDTAdapters
   is accepted at the statement written with `selected F` and `center F`.
 - Each of the 50 release names in the first column of the conventions table of README.md, and
   YM.Work.A01.divergence, YM.Maxwell.Free.radial_K, .current_div and .radial_flux, is present in
-  this environment (Lean.Environment.contains). The eight names that README.md says are read from
-  the release's source are absent from this environment, as stated there.
+  this environment (Lean.Environment.contains). The eight names that README.md then said are read
+  from the release's source are absent from this environment, as stated there (ten since record 3;
+  the two added names were checked in record 3).
 - The hypothesis text: lines 225 and 240 of PDTAdapters/TraceStep.lean are identical to line 93
   of YM/Nonperturbative/HeadlineSpec.lean, and lines 226 and 241 differ from its line 94 only by
   `c` in place of `Trace.Verse.award G` (diff of the text). Lines 93-94 are the text of the field
@@ -174,12 +226,13 @@ HASHES (sha256)
 22f453d66a5b01a3b3c8d810dbe30e6e2ea1973b5df6bb4a0259c21cc3dc9bc5  PDTAdapters/General.lean
 7436e74424ec45d810247997db253bb259753532c43ea75ab7f2230ba4b5e8d8  PDTAdapters/Det.lean
 94914e30e57c5f1921e6cf6838f79d80f084d31a0d177b463ba9b9955fee2dd9  PDTAdapters/TraceStep.lean
-b81a5eabf3757f6346a66ba6c2c0c205e7f8145d3dbfacc8f8c43ab6b6c4d50b  PDTAdapters/OnFinal.lean
-3d1c4075d232ff536738e118526decf09cc27871c55e00dda5fe2d98b88120f1  PDTAdapters/FreeControl.lean
+d00b580750d1395a0f6ebc77068c090b0afe6fec600267a840507b463bc2704d  PDTAdapters/OnFinal.lean
+6d937bfab14a8ed1918952cde066607cd038c850af849560463235aaf4903410  PDTAdapters/FreeControl.lean
 8adcfbcafae338b02849598d10a53af52ae4f94a8af34bd12e25bb9ed6ddc5ec  Axioms.lean
 
-The eight library files and Axioms.lean are byte-identical in this repository and in the working
-checkout in which record 2 was built (cmp). SHA256SUMS lists every file of this repository except
+(The OnFinal and FreeControl lines were updated in record 3; the hashes of 52b2bd2c are listed
+there.) The eight library files and Axioms.lean are byte-identical in this repository and in the
+working checkout in which records 2 and 3 were built (cmp). SHA256SUMS lists every file of this repository except
 itself.
 
 ------------------------------------------------------------------------------------------------

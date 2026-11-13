@@ -57,7 +57,7 @@ label `stressTrace F.sector.energy` is zero in `S.Field 4` if and only if the di
 `current F.sector.energy (fun z => z)` is divergence-free at every separated configuration, with
 every list of spectator labels. This is `stressTrace_eq_zero_iff` with its hypotheses supplied by
 `F.room.kernel.laws.toSymmetric`, `F.room.kernel.smooth`, `F.phase.transport.derivatives` and
-`F.phase.transport.conserved`. Neither side of the equivalence is asserted. -/
+`F.phase.transport.conserved`. -/
 theorem final_stressTrace_eq_zero_iff (F : Spec.Final C f S) :
     stressTrace F.sector.energy = 0 ↔
       ∀ (n : ℕ) (x : Points n) (q : Fin n → S.Tag) (y : E4), Points.cons y x ∈ conf (n+1) →
@@ -87,8 +87,8 @@ theorem final_phase_dilation_divergence_center (F : Spec.Final C f S) (i : F.α.
 itself, for the release's own `current`: with `θ = theta S F.sector.energy`, the divergence at
 `y` of `current F.sector.energy (fun z => z) x` against the spectator `θ` at `x` is the two-point
 moment of `θ` in `S` at the pair `(y, x 0)`. The hypotheses of `dilation_divergence_centerIn` at
-`T = S` are supplied by `F.room.kernel` (the `Hierarchy`), `F.phase.transport.derivatives` and
-`F.phase.transport.conserved`. -/
+`T = S` are supplied by reflexivity (`S.respects S`), `F.room.kernel` (the `Hierarchy`),
+`F.phase.transport.derivatives` and `F.phase.transport.conserved`. -/
 theorem final_dilation_divergence_center (F : Spec.Final C f S) {x : Points 1} {y : E4}
     (hy : Points.cons y x ∈ conf 2) :
     ∑ a : Axis, D (basis a) (current F.sector.energy (fun z : E4 => z) x

@@ -24,7 +24,9 @@ open scoped BigOperators ContDiff
 
 variable {G : Gauge}
 
-/-- The diagonal sum of the release's `polStress` is zero. -/
+/-- The diagonal sum of the release's `polStress` is zero. This has the statement of the
+release's `YM.Trace.trace_free` (`YM/Trace/FreeScalar.lean`), with `G` explicit here; it is
+proved here a second time because that module is not among those built for this library. -/
 theorem polStress_trace (G : Gauge) : ∑ a : Axis, Maxwell.Free.polStress G a a = 0 := by
   unfold Maxwell.Free.polStress
   rw [Finset.sum_sub_distrib, ← Finset.sum_smul]

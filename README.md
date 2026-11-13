@@ -32,9 +32,11 @@ checks it), and `PDTAdapters.killing_iff_conformal` proves that a field satisfie
 point. For the dilation field `V(y) = y` the right side is `⟨J_cc(y) q(x)⟩`
 (`PDTAdapters.dilation_divergence_trace`). On the release's `F : YM.Spec.Final C f S` the
 hypotheses are met by the table `S` itself with the release's own `YM.Work.A01.current` and the
-stress `F.sector.energy` (`PDTAdapters.final_conformal_divergence`, from the fields
-`F.room.kernel.smooth`, `F.phase.transport.derivatives`, `F.phase.transport.conserved`), and by
-every phase table `F.α.ensemble i` (`PDTAdapters.final_phase_conformal_divergence`).
+stress `F.sector.energy` (`PDTAdapters.final_conformal_divergence`, with the plan
+`F.sector.derivatives` and the fields `F.room.kernel.smooth`, `F.phase.transport.derivatives`,
+`F.phase.transport.conserved`); in every phase table `F.α.ensemble i` the same identity holds
+with the moments read in that table, for this library's `currentIn`
+(`PDTAdapters.final_phase_conformal_divergence`).
 
 **2. The dilation field against the centred trace.** Let `F : YM.Spec.Final C f S`, let `T` be
 any of its phase tables `F.α.ensemble i`, `J = F.sector.energy`, and `θ = J_cc − ⟨J_cc⟩_T · 1`
@@ -51,8 +53,6 @@ realizing its derivatives. In the selected phase the right side is the release's
 `PDTAdapters.selected_dilation_divergence_at` gives `euclidean F ‖y − x‖` (in Lean,
 `‖y - x 0‖`). On the table `S` itself, with the release's own `current`, the identity is
 `PDTAdapters.final_dilation_divergence_center`.
-
-The release's proof does not use these identities: no file of the release imports this library.
 
 The library also contains two short-distance rate statements in **hypothesis form**
 (`selected_dilation_rate`, `selected_dilation_not_conserved`), the characterization
@@ -99,14 +99,15 @@ Euclidean signature, dimension four. Paths are in the release at the commit abov
 | `YM.Maxwell.Free.Model`, `YM.Maxwell.Free.original`, `YM.Maxwell.Free.scheme`, `YM.Maxwell.Free.polStress` | `Maxwell.Free.Model F`, `Maxwell.Free.original F`, `Maxwell.Free.scheme F`, `Maxwell.Free.polStress G` | `YM/Next/MAXWELL/System.lean`, `YM/Next/MAXWELL/Stress.lean` | `freeTable F`; its stress; its derivative plan; the polarized Maxwell stress as a polynomial |
 | `YM.Maxwell.Free.Killing` | `Maxwell.Free.Killing v` | `YM/Next/MAXWELL/Current.lean` | for `v : Axis → E4 → ℝ`: smooth components, `∂_a v_b = −∂_b v_a` for `a ≠ b`, and `∂_a v_a = ∂_b v_b` for all `a`, `b` |
 
-Every name in the first column resolves in the environment built for this library. Eight more
+Every name in the first column resolves in the environment built for this library. Ten more
 names of the release are cited below from its source text, because their modules are not among
 those built: `YM.Trace.Verse.axis_shape` and `YM.Trace.Verse.award`
 (`YM/TraceExtension/Verse/Day.lean`), `YM.Nonperturbative.Headline.TraceExclusions`
 (`YM/Nonperturbative/HeadlineSpec.lean`), `YangMills.constructed` (`Construction.lean`),
 `YM.Trace.trace_free` (`YM/Trace/FreeScalar.lean`), `YM.Trace.rho`
-(`YM/TraceExtension/Foundation/Dilate.lean`), and `YM.Maxwell.Free.radial_motion` and
-`YM.Maxwell.Free.moment_force` (`YM/Next/MAXWELL/Taxes.lean`).
+(`YM/TraceExtension/Foundation/Dilate.lean`), `YM.Maxwell.Free.radial_motion` and
+`YM.Maxwell.Free.moment_force` (`YM/Next/MAXWELL/Taxes.lean`), and
+`YM.EveryPhase.Stress.tide_div` and `YM.EveryPhase.Stress.tensor_conserved` (`YM/EveryPhase/`).
 
 Two definitions are added by this library for its statements (two more, the abbreviation `frontCaps` and
 the definition `frontIn` in `PDTAdapters/General.lean`, are helpers for the proofs):
@@ -149,12 +150,12 @@ All names are in the namespace `PDTAdapters`.
 | `selected_dilation_not_conserved` | `TraceStep.lean` | **Hypothesis form.** Under the same hypothesis and `c ≠ 0`: there is `r₀ > 0` such that the divergence of the dilation current at `opposed r` is nonzero for every `0 < r < r₀`. By `selected_dilation_divergence` this conclusion is the statement `euclidean F r ≠ 0` on `(0, r₀)`. | as above |
 | `rate_ne_zero`, `rate_zero_control` | `TraceStep.lean` | For any `f : ℝ → ℂ` and real `c ≠ 0`: if `(s⁸ (log s⁻¹)²) • f s → c` as `s → 0⁺` then `f` has no zero on some interval `(0, r₀)`. The control: for `f = 0` and `c = 0` the limit hypothesis holds and the conclusion fails, so `c ≠ 0` cannot be dropped from this step. | none (Mathlib only) |
 | `final_conformal_divergence` | `OnFinal.lean` | For `F : Spec.Final C f S`, a smooth `V` with `conformal V`, spectator labels `q` at points `x`, and `y` separated from `x`: the divergence of the release's `current F.sector.energy V x q` at `y` equals `((1/4) * ∑ c, ∂_c V_c (y)) • S.useAt S (Points.cons y x) (Fin.cons ⟨4, stressTrace F.sector.energy⟩ q)`. This is `conformal_divergence` with its hypotheses supplied by `F.room.kernel.smooth`, `F.phase.transport.derivatives` and `F.phase.transport.conserved`. | `Spec.Final`, `current`, `stressTrace`, `useAt`, `conf`, `D` |
-| `final_stressTrace_eq_zero_iff` | `OnFinal.lean` | For `F : Spec.Final C f S`: `stressTrace F.sector.energy = 0` if and only if, for every `n`, `x`, `q` and every `y` separated from `x`, the divergence of `current F.sector.energy (fun z => z) x q` at `y` is `0`. This is `stressTrace_eq_zero_iff` with its hypotheses supplied by fields of `F` (`F.room.kernel.laws.toSymmetric` for `S.Symmetric`). Neither side is asserted. | as above |
+| `final_stressTrace_eq_zero_iff` | `OnFinal.lean` | For `F : Spec.Final C f S`: `stressTrace F.sector.energy = 0` if and only if, for every `n`, `x`, `q` and every `y` separated from `x`, the divergence of `current F.sector.energy (fun z => z) x q` at `y` is `0`. This is `stressTrace_eq_zero_iff` with its hypotheses supplied by fields of `F` (`F.room.kernel.laws.toSymmetric` for `S.Symmetric`). | as above |
 | `final_phase_dilation_divergence_center` | `OnFinal.lean` | For `F : Spec.Final C f S`, every index `i` of `F.α`, one point `x` and `y ≠ x 0`: with `T = F.α.ensemble i`, the divergence at `y` of `currentIn T F.sector.energy (fun z => z) x` with the single spectator label `theta T F.sector.energy` equals `S.useAt T (Points.cons y x) (fun _ => ⟨4, theta T F.sector.energy⟩)`. This is `dilation_divergence_centerIn` with its hypotheses supplied by `F.phase.phase.retains i`, `F.phase.phase.states i`, `F.phase.phase.calculus i` and `F.phase.transport.conserved`. | `Spec.Final`, `theta`, `useAt`, `conf`, `D` |
 | `final_dilation_divergence_center` | `OnFinal.lean` | For `F : Spec.Final C f S`, one point `x` and `y ≠ x 0`: the divergence at `y` of the release's `current F.sector.energy (fun z => z) x` with the single spectator label `theta S F.sector.energy` equals `S.useAt S (Points.cons y x) (fun _ => ⟨4, theta S F.sector.energy⟩)`. This is `dilation_divergence_centerIn` at `T = S`, with `F.room.kernel` for `S.Hierarchy`. | `Spec.Final`, `current`, `theta`, `useAt`, `conf`, `D` |
 | `killing_of_conformal`, `killing_iff_conformal` | `OnFinal.lean` | If `conformal V` and `∑ c, ∂_c V_c = 0` at every point, then `killing V`. Hence `killing V` if and only if `conformal V` and `∑ c, ∂_c V_c = 0` at every point (the forward direction is `killing_conformal` with `killing_divergence`). | `killing`, `D`, `basis`, `Axis`, `E4` |
-| `conformal_freeKilling` | `OnFinal.lean` | If every coordinate of `V : E4 → E4` is smooth and `conformal V`, then the release's `Maxwell.Free.Killing (fun a x => V x a)` holds. The converse is not proved here. | `Maxwell.Free.Killing`, `D`, `basis` |
-| `free_dilation_divergence` | `FreeControl.lean` (not imported by the root) | For `F : Labels.Frames G`, on the release's free-Maxwell table `Maxwell.Free.Model F` with its stress `Maxwell.Free.original F`: at every separated configuration and for every list of spectator labels, the divergence of `current (Maxwell.Free.original F) (fun z => z) x q` at `y` is `0`. The proof uses only `stressTrace (Maxwell.Free.original F) = 0` (`free_stressTrace`); the file does not prove that this stress is nonzero. | `Maxwell.Free.Model`, `Maxwell.Free.original`, `Maxwell.Free.scheme`, `Maxwell.table_smooth`, `current`, `stressTrace` |
+| `conformal_freeKilling` | `OnFinal.lean` | If every coordinate of `V : E4 → E4` is smooth and `conformal V`, then the release's `Maxwell.Free.Killing (fun a x => V x a)` holds. | `Maxwell.Free.Killing`, `D`, `basis` |
+| `free_dilation_divergence` | `FreeControl.lean` (not imported by the root) | For `F : Labels.Frames G`, on the release's free-Maxwell table `Maxwell.Free.Model F` with its stress `Maxwell.Free.original F`: at every separated configuration and for every list of spectator labels, the divergence of `current (Maxwell.Free.original F) (fun z => z) x q` at `y` is `0`. The proof uses only `stressTrace (Maxwell.Free.original F) = 0` (`free_stressTrace`). | `Maxwell.Free.Model`, `Maxwell.Free.original`, `Maxwell.Free.scheme`, `Maxwell.table_smooth`, `current`, `stressTrace` |
 
 ### Supporting lemmas
 
@@ -224,8 +225,6 @@ equation.
 - **That the free-Maxwell stress is nonzero.** `free_dilation_divergence` holds equally for the
   zero stress. It shows that a nonzero divergence does not follow from the definitions `current`,
   `D` and `useAt` alone.
-- `det_invariant` is about symmetric endomorphisms only; it is not a statement about every
-  operator commuting with the adjoint action.
 
 ## Relation to a general theorem in Mathlib alone
 
@@ -268,7 +267,12 @@ two files speak of a supplementary dilation charge), and under `YM/TraceExtensio
 functional whose docstring calls it the dilation contraction (`YM.Trace.rho`,
 `YM/TraceExtension/Foundation/Dilate.lean`). The relation of these to the identities here has
 not been examined. In correlators, the release has the Killing case for a conserved stress
-(`YM.Work.A01.divergence`, `YM/Work/A01/Conserve.lean`).
+(`YM.Work.A01.divergence`, `YM/Work/A01/Conserve.lean`). On its analytically continued
+correlators it also has the zero-divergence statement for translations and infinitesimal Lorentz
+transformations (`YM.EveryPhase.Stress.tide_div`, `YM/EveryPhase/Killing.lean`), and
+conservation of the reconstructed stress field (`YM.EveryPhase.Stress.tensor_conserved`,
+`YM/EveryPhase/Tensor.lean`). The relation of these to the identities here has not been
+examined.
 This library proves the conformal Killing case in correlators for a conserved stress, with the
 trace term; the release's Killing theorem is its zero-divergence case. No claim of priority is
 made for anything in this repository.
@@ -307,16 +311,20 @@ targets, which is a much larger job.
 
 What gets built: by the import lines, 411 of the release's modules for `lake build PDTAdapters`
 and 30 more for `PDTAdapters.FreeControl` (441 of the 9,457 files under `YM/`), plus the eight
-Lean files of this library. `BUILD.txt` holds two records. Record 1 is a clean-checkout build of
+Lean files of this library. `BUILD.txt` holds three records. Record 1 is a clean-checkout build of
 the previous commit, `41856c2f` (2026-11-13, macOS arm64, 10 cores): the two builds took
 4 min 44 s and 57 s and produced 1.1 GiB under `.lake/build`; the dependencies under
-`.lake/packages`, with Mathlib's compiled files, take about 7.7 GiB more. Record 2 is this
-version, built incrementally in the working checkout of the release (the clean-checkout run was
-not repeated); both targets build with exit code 0 and the axiom listing is as stated below.
+`.lake/packages`, with Mathlib's compiled files, take about 7.7 GiB more. Record 2 is the next
+commit, `52b2bd2c`, built incrementally in the working checkout of the release (the
+clean-checkout run was not repeated); record 3 is this version, which changes docstrings only,
+rebuilt the same way. In both, the two targets build with exit code 0 and the axiom listing is
+as stated below.
 
-The clean-checkout run of record 1 followed these steps except for two things that `BUILD.txt`
-states: the release was cloned from a local clone of its public repository, and the pinned
-dependencies came from an existing copy, so the step `lake exe cache get` was not exercised.
+The clean-checkout run of record 1 followed these steps with three departures that `BUILD.txt`
+states: the files of this library were copied in from a local copy of this repository rather
+than from the `git clone` in the first line; the release was cloned from a local clone of its
+public repository; and the pinned dependencies came from an existing copy, so the step
+`lake exe cache get` was not exercised.
 
 `PDTAdapters.lean` ends with `#print axioms` lines, so `lake build PDTAdapters` prints the axioms
 of 34 of the theorems.
@@ -353,10 +361,10 @@ Every declaration of the seven modules (50 theorems, 3 definitions, 1 abbreviati
   That README does not print its own repository's name or commit; both are taken here from the
   clone. The README of `yang-mills-group/YM` (commit `55ba9fc3`) refers to it as the separate
   original-submission repository. This repository contains no file of the release.
-- **This add-on.** Several proofs here follow proof text of the release, as stated above
-  (`conformal_divergence`, `conformal_divergenceIn`, `smooth_consIn`, `D_consIn`, `at_unitIn`,
-  `selected_axis_shape`); `polStress_trace` proves a statement of the release a second time,
-  with a different proof. **Licence of this add-on: the Apache License, Version 2.0 (`LICENSE`),
+- **This add-on.** Several proofs here follow proof text of the release (`conformal_divergence`
+  and `conformal_divergenceIn` up to their last step, `smooth_consIn`, `D_consIn`, `at_unitIn`,
+  `selected_axis_shape`, and the one-line `cons_head_tail`); `polStress_trace` proves a
+  statement of the release a second time, with a different proof. **Licence of this add-on: the Apache License, Version 2.0 (`LICENSE`),
   the licence of the release; `NOTICE` names the declarations that follow the release's
   statements or proof text.**
 - **Author.** Stephanie Alexander (ORCID [0009-0003-7727-2565](https://orcid.org/0009-0003-7727-2565)).
