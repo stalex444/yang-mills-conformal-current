@@ -69,7 +69,7 @@ re-elaboration of the other modules, and the import closures. Previous hashes (5
   3d1c4075d232ff536738e118526decf09cc27871c55e00dda5fe2d98b88120f1  PDTAdapters/FreeControl.lean
 
 ================================================================================================
-RECORD 2 -- the current version (2026-11-13, 15:33Z to 15:37Z)
+RECORD 2 -- commit 52b2bd2c (2026-11-13, 15:33Z to 15:37Z)
 ================================================================================================
 
 Machine: macOS 26.6.2, arm64 (Apple M4, 10 cores).

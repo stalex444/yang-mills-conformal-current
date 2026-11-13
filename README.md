@@ -265,8 +265,8 @@ On the free system it also has a flux identity for the dilation field with a cut
 and `YM.Maxwell.Free.moment_force`, `YM/Next/MAXWELL/Taxes.lean`; the module docstrings of the
 two files speak of a supplementary dilation charge), and under `YM/TraceExtension` a linear
 functional whose docstring calls it the dilation contraction (`YM.Trace.rho`,
-`YM/TraceExtension/Foundation/Dilate.lean`). The relation of these to the identities here has
-not been examined. In correlators, the release has the Killing case for a conserved stress
+`YM/TraceExtension/Foundation/Dilate.lean`). In correlators, the release has the Killing case
+for a conserved stress
 (`YM.Work.A01.divergence`, `YM/Work/A01/Conserve.lean`). On its analytically continued
 correlators it also has the zero-divergence statement for translations and infinitesimal Lorentz
 transformations (`YM.EveryPhase.Stress.tide_div`, `YM/EveryPhase/Killing.lean`), and
@@ -274,8 +274,7 @@ conservation of the reconstructed stress field (`YM.EveryPhase.Stress.tensor_con
 `YM/EveryPhase/Tensor.lean`). The relation of these to the identities here has not been
 examined.
 This library proves the conformal Killing case in correlators for a conserved stress, with the
-trace term; the release's Killing theorem is its zero-divergence case. No claim of priority is
-made for anything in this repository.
+trace term; the release's Killing theorem is its zero-divergence case.
 
 ## Build
 
@@ -316,8 +315,8 @@ the previous commit, `41856c2f` (2026-11-13, macOS arm64, 10 cores): the two bui
 4 min 44 s and 57 s and produced 1.1 GiB under `.lake/build`; the dependencies under
 `.lake/packages`, with Mathlib's compiled files, take about 7.7 GiB more. Record 2 is the next
 commit, `52b2bd2c`, built incrementally in the working checkout of the release (the
-clean-checkout run was not repeated); record 3 is this version, which changes docstrings only,
-rebuilt the same way. In both, the two targets build with exit code 0 and the axiom listing is
+clean-checkout run was not repeated); record 3 is this version, which changes Lean docstrings
+only, rebuilt the same way. In both, the two targets build with exit code 0 and the axiom listing is
 as stated below.
 
 The clean-checkout run of record 1 followed these steps with three departures that `BUILD.txt`
