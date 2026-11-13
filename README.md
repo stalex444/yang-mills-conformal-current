@@ -64,13 +64,15 @@ rate `Trace.Verse.award G` and is nonzero at every pair closer than some `r₀ >
 (`PDTAdapters.headline_dilation_rate`, `PDTAdapters.headline_dilation_not_conserved_at`): see
 "On the release's `TraceExclusions`". The module `PDTAdapters/OnConstructed.lean` (also not
 imported by the root) proves `PDTAdapters.constructed_dilation_not_conserved`: for every simple
-gauge group `g` and every `b > 0` there is a family with penalty `b` such that, for every order
-`p`, some `F : YM.Spec.Final C (p.refine q) S` satisfies `TraceExclusions F` and the divergence of
-its dilation current against the centred trace spectator is nonzero at every pair closer than
-some `r₀ > 0`, with the witness taken from the release's theorem `YangMills.constructed`; this is
-checked against the restored public compiled build of the release (record 5 of `BUILD.txt`; see
-"On the release's construction theorem"). The limits of scope are listed once, under "What is not
-proved".
+gauge group `g` and every `b > 0` there is a family `C` with penalty `b` and `C.Makes` such that,
+for every order `p`, there are `q`, `S` and `F : YM.Spec.Final C (p.refine q) S` with
+`TraceExclusions F` and an `r₀ > 0` such that the divergence of the dilation current of
+`F.sector.energy` in the selected phase, against the centred trace spectator, is nonzero at every
+separated pair closer than `r₀`; the witness is that of the release's theorem
+`YangMills.constructed`, and at the release's `YangMills.su2` with `b = 1` with no hypothesis
+(`PDTAdapters.su2_dilation_not_conserved`); this is checked against the restored public compiled
+build of the release (record 5 of `BUILD.txt`; see "On the release's construction theorem"). The
+limits of scope are listed once, under "What is not proved".
 
 ## How the statements are written
 
@@ -237,7 +239,7 @@ release's two universes.
 | `PDTAdapters.constructed_dilation` | For `g : YangMills.GaugeGroup` with `g.IsSimple`, and `0 < b`: the statement of `YangMills.constructed` (`Construction.lean`, lines 15–31), every clause in the release's order and text, with two conjuncts appended for the same witness `q S F L Q M X`: the conclusion of `headline_dilation_rate` for that `F` (the limit is `Trace.Verse.award g.core`) and the conclusion of `headline_dilation_not_conserved_at` for that `F`. The proof takes the witness of `YangMills.constructed` and applies the two theorems to its clause `Headline.TraceExclusions F`. |
 | `PDTAdapters.constructed_dilation_not_conserved` | Under the same hypotheses: there is `C : YM.Family g.core` with penalty `b` and `C.Makes` such that, for every order `p`, there are `q`, `S` and `F : Final C (p.refine q) S` with `Headline.TraceExclusions F` and an `r₀ > 0` such that, for every one-point configuration `x` and every `y ≠ x 0` with `‖y - x 0‖ < r₀`, the divergence at `y` of `currentIn (selected F) F.sector.energy (fun z => z) x` with the spectator label `center F` is nonzero. A projection of `constructed_dilation`. |
 | `PDTAdapters.constructed_of_constructed_dilation` | The statement of `YangMills.constructed` at `g hg b hb` (its type is written `type_of%` of that application), derived from `constructed_dilation` by taking its conjuncts apart. Its proof term does not contain `YangMills.constructed` (record 5 lists the constants). So every clause of the release's statement is a conjunct of `constructed_dilation`. |
-| `PDTAdapters.su2_dilation_not_conserved` | `constructed_dilation_not_conserved` at the release's `YangMills.su2` (the defining two-dimensional representation of SU(2)), with the release's proof `YangMills.su2Simple` of `su2.IsSimple` (both in `ConcreteSU2.lean`), and `b = 1`. It has no hypothesis. |
+| `PDTAdapters.su2_dilation_not_conserved` | `constructed_dilation_not_conserved` at the release's `YangMills.su2` (its docstring, `ConcreteSU2.lean` line 7: "The defining complex two-dimensional representation of SU(2)."), with the release's proof `YangMills.su2Simple` of `su2.IsSimple` (both in `ConcreteSU2.lean`), and `b = 1`. It has no hypothesis. |
 
 The module imports `PDTAdapters.OnHeadline` and two of the release's root-level modules:
 `Construction`, which holds `YangMills.constructed`, and `ConcreteSU2`, which holds
@@ -251,7 +253,8 @@ checks it by compiling it with `lean -o` against the public compiled build `lean
 of the release, as in record 4: the release's modules, `Construction` and `ConcreteSU2` among
 them, were loaded from the restored files, not compiled from source on the machine used, and their
 declarations were not re-checked by a kernel replay. Compiling that closure from source in the
-checkout of "Build" would also check it and was not done. Loading the environment took about 8 GB of resident memory.
+checkout of "Build" would also check it and was not done. Loading the environment took about 8 GB
+of resident memory.
 `AxiomsOnConstructed.lean` prints the axioms of the four theorems.
 
 ## What is not proved
@@ -269,12 +272,11 @@ checkout of "Build" would also check it and was not done. Loading the environmen
   theorem's clause. `YangMills.constructed` (`Construction.lean`, line 28) asserts
   `TraceExclusions F` of the `F` whose existence it proves; `PDTAdapters/OnConstructed.lean`
   takes the step from that theorem to the theorems of `OnHeadline.lean` in Lean, checked against
-  the restored public compiled build of the release (record 5 of `BUILD.txt`): the release's
-  modules, `Construction` among them, were loaded as compiled, not compiled from source on the
-  machine used. For a given `F`, no theorem here asserts, without the hypothesis
-  `TraceExclusions F`, that the trace two-point function, or the divergence of the dilation
-  current, is nonzero; for the `F` of `YangMills.constructed` that hypothesis is the release's
-  clause.
+  the restored public compiled build of the release (record 5 of `BUILD.txt`; see "On the
+  release's construction theorem"). For a given `F`, no theorem here asserts, without the
+  hypothesis `TraceExclusions F`, that the trace two-point function, or the divergence of the
+  dilation current, is nonzero; for the `F` of `YangMills.constructed` that hypothesis is the
+  release's clause.
 - **Anything at coincident points.** Every statement is a pointwise derivative identity for
   correlators at configurations in `conf`, where all points are distinct. There is no contact
   term and no distributional extension of the identities across coinciding points.
@@ -390,7 +392,7 @@ Lean files of this library other than `PDTAdapters/OnHeadline.lean` and
 `PDTAdapters/OnConstructed.lean`, which these targets do not build (see "On the release's
 `TraceExclusions`" and "On the release's construction theorem"). `BUILD.txt` holds five
 records. Record 1 is a clean-checkout build of
-the previous commit, `41856c2f` (2026-11-13, macOS arm64, 10 cores): the two builds took
+the public commit `41856c2f` (2026-11-13, macOS arm64, 10 cores): the two builds took
 4 min 44 s and 57 s and produced 1.1 GiB under `.lake/build`; the dependencies under
 `.lake/packages`, with Mathlib's compiled files, take about 7.7 GiB more. Record 2 is the next
 commit, `52b2bd2c`, built incrementally in the working checkout of the release (the

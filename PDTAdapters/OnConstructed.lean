@@ -23,8 +23,9 @@ that clause.
   `C.Makes`, and for every order `p` a table `S` and an `F` with `Headline.TraceExclusions F` and
   the second of the two conclusions.
 * `constructed_of_constructed_dilation` — the statement of `YangMills.constructed` at
-  `g hg b hb`, derived from `constructed_dilation` by taking its conjuncts apart; the proof does
-  not use `YangMills.constructed`.
+  `g hg b hb`, derived from `constructed_dilation` by taking its conjuncts apart; its proof term
+  names `constructed_dilation`, not `YangMills.constructed` (which it uses through
+  `constructed_dilation`).
 * `su2_dilation_not_conserved` — `constructed_dilation_not_conserved` at the release's
   `YangMills.su2` and `YangMills.su2Simple` (`ConcreteSU2.lean`) and `b = 1`.
 
@@ -107,8 +108,8 @@ theorem constructed_dilation_not_conserved (g : GaugeGroup) (hg : g.IsSimple) (b
 /-- **Nothing dropped or altered.** The statement of the release's `YangMills.constructed` at
 `g hg b hb` (the type is written `type_of%` of that application), derived from
 `constructed_dilation` by taking its conjuncts apart and leaving out the two appended ones. The
-proof does not use `YangMills.constructed` (see `BUILD.txt` record 5 for the constants of the
-proof term). -/
+proof term names `constructed_dilation`, not `YangMills.constructed`, which it uses only through
+`constructed_dilation` (see `BUILD.txt` record 5 for the constants of the proof term). -/
 theorem constructed_of_constructed_dilation (g : GaugeGroup) (hg : g.IsSimple) (b : ℝ)
     (hb : 0 < b) : type_of% (YangMills.constructed.{u,v} g hg b hb) := by
   obtain ⟨C, penalty, makes, regular, orders⟩ := constructed_dilation.{u,v} g hg b hb

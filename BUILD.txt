@@ -13,7 +13,9 @@ This file holds five records, all made on 2026-11-13:
 
   RECORD 5  the commit that follows 82926626: adds PDTAdapters/OnConstructed.lean and
             AxiomsOnConstructed.lean, compiled with `lean -o` against the restored compiled build
-            of the release, as in record 4. It comes first.
+            of the release, as in record 4; and the commit after it (corrections after review:
+            two docstrings of PDTAdapters/OnConstructed.lean and the text files), with pass B
+            below. It comes first.
   RECORD 4  the commit that follows 359eaf6d: adds PDTAdapters/OnHeadline.lean and
             AxiomsOnHeadline.lean, and compiles every module of the library with `lean -o`
             against a restored compiled build of the release, without Lake; and the commit after
@@ -31,7 +33,7 @@ This file holds five records, all made on 2026-11-13:
 
 ================================================================================================
 RECORD 5 -- PDTAdapters/OnConstructed.lean, against the restored compiled build (2026-11-13,
-            19:19Z to 19:32Z)
+            19:19Z to 19:32Z; pass B 19:49Z to 19:52Z)
 ================================================================================================
 
 Machine: macOS 26.6.2, arm64 (Apple M4). Lean (version 4.32.0, arm64-apple-darwin24.6.0, commit
@@ -66,8 +68,8 @@ Commands. Run from the root of this repository, one Lean process at a time, with
               release's nine packages (all but Cli)
   lean -R . -DmaxHeartbeats=0 -DmaxRecDepth=4096 -o <out>/<Module/Path>.olean <Module/Path>.lean
 (<out> an empty output directory). Times are wall-clock, from /usr/bin/time -l, which also gives
-the peak resident set size. The modules that OnConstructed.lean needs, compiled from source,
-19:19:36Z to 19:19:58Z:
+the peak resident set size. The modules of this library that OnConstructed.lean needs, compiled
+from source on this machine, 19:19:36Z to 19:19:58Z:
     PDTAdapters/Conformal.lean      exit 0, no output, 2.3 s
     PDTAdapters/Divergence.lean     exit 0, no output, 2.9 s
     PDTAdapters/General.lean        exit 0, no output, 2.8 s
@@ -103,7 +105,8 @@ each about 4 s and about 8 GB peak):
       the left is rejected (exit 1, "Type mismatch").
   (ii) The constants occurring in each proof term (read from the environment, not transitively):
       constructed_dilation: YangMills.constructed, PDTAdapters.headline_dilation_rate and
-        PDTAdapters.headline_dilation_not_conserved_at among them;
+        PDTAdapters.headline_dilation_not_conserved_at among them (the full list of its theorem
+        constants is under pass B);
       constructed_dilation_not_conserved and constructed_of_constructed_dilation:
         PDTAdapters.constructed_dilation, and not YangMills.constructed;
       su2_dilation_not_conserved: PDTAdapters.constructed_dilation_not_conserved, YangMills.su2
@@ -145,8 +148,37 @@ Not done, not checked in this record:
   - nothing is stated at coincident points;
   - Linux was not tried.
 
-HASHES of the two added files (sha256); the other Lean files are those of record 4:
-  131d974df8f90394029b2a04ed58aa48cc4b188694d3c53731adbc4ca370e555  PDTAdapters/OnConstructed.lean
+PASS B (19:49Z to 19:52Z), for the commit after the one that adds OnConstructed.lean
+(corrections after review). Changed: two docstrings of PDTAdapters/OnConstructed.lean (the
+module docstring's entry for constructed_of_constructed_dilation, and that theorem's docstring:
+its proof term names constructed_dilation, not YangMills.constructed, which it uses through
+constructed_dilation); README.md; this file; SHA256SUMS. No statement or proof changed. Same
+machine, Lean, flags and LEAN_PATH composition as above; <out> a fresh directory holding the
+compiled Conformal, Divergence, General, TraceStep and OnHeadline modules of the run above
+(their sources are unchanged).
+  PDTAdapters/OnConstructed.lean -o   19:49:42Z exit 0, no output, 60.2 s, peak 8.4 GB
+  AxiomsOnConstructed.lean            19:50:48Z exit 0, 4.4 s, the 4 lines above, unchanged
+  The kernel checks (i)-(iii), the import closure and the four hypothesis-deletion copies above,
+  19:50:52Z to 19:51:24Z, about 4 s each, about 8 GB peak: the same exit codes, results and first
+  errors as above.
+  Theorem constants occurring directly in each proof term (constants whose declaration is a
+  theorem; read from the environment, not transitively):
+    constructed_dilation: YangMills.constructed, PDTAdapters.headline_dilation_rate,
+      PDTAdapters.headline_dilation_not_conserved_at; and YM.Table.Hierarchy.spin,
+      YM.Spec.Seed.kernel, YM.Spec.Final.room, YangMills.GaugeGroup.coreSimple,
+      PiLp.innerProductSpace._proof_1, fact_one_le_two_ennreal, YM.spatial._proof_1, which are
+      Prop fields and auxiliary proofs occurring in the statement's own terms (for example
+      F.room.kernel.spin, coreSimple hg);
+    constructed_dilation_not_conserved and constructed_of_constructed_dilation:
+      PDTAdapters.constructed_dilation and the same seven;
+    su2_dilation_not_conserved: PDTAdapters.constructed_dilation_not_conserved,
+      YangMills.su2Simple, one_pos, Real.instZeroLEOneClass, NeZero.charZero_one,
+      FloorSemiring.instCharZero.
+
+HASHES of the two added files (sha256), after pass B; the other Lean files are those of record 4.
+OnConstructed.lean was 131d974df8f90394029b2a04ed58aa48cc4b188694d3c53731adbc4ca370e555 before
+pass B:
+  ef807b3fe64ed0b26b151ad6bb4f7a0fe5556a7e462a205c1a2b5745f78b730e  PDTAdapters/OnConstructed.lean
   5e0ded7c0d626a7deee03db046d7aa14b56b8c6f9d312d96014f7ffff770f01a  AxiomsOnConstructed.lean
 SHA256SUMS lists every file of this repository except itself.
 
