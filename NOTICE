@@ -1,0 +1,20 @@
+PDTAdapters: an add-on library for the Wilson Yang–Mills source distribution
+Copyright (c) 2026 Stephanie Alexander
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This library is built against, and contains no file of, the Wilson Yang–Mills
+source distribution (repository yang-mills-group/OpenAI-YM-20261028, commit
+3456e5e75cf8d4cd558955a5c7638fba2d68f464), whose project licence is the Apache
+License, Version 2.0, and whose NOTICE supplies its attributions.
+
+Several proofs in this library follow proof text of that distribution:
+  PDTAdapters/Divergence.lean, conformal_divergence: the proof of
+    YM.Work.A01.divergence.
+  PDTAdapters/General.lean, conformal_divergenceIn, smooth_consIn, D_consIn:
+    the same proof and its supporting steps, with moments read in a second
+    table.
+  PDTAdapters/TraceStep.lean, selected_axis_shape: the proof of the
+    distribution's axis_shape; the rate hypothesis of selected_dilation_rate
+    and selected_dilation_not_conserved is the text of the distribution's
+    HeadlineSpec.lean, line 93, with a real constant in place of its award.
+The statements and the remaining proofs are this library's.
