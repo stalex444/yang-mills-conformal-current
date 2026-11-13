@@ -175,6 +175,12 @@ compiled Conformal, Divergence, General, TraceStep and OnHeadline modules of the
       YangMills.su2Simple, one_pos, Real.instZeroLEOneClass, NeZero.charZero_one,
       FloorSemiring.instCharZero.
 
+AFTER PASS B (2026-11-13, a second read of the commit above): README.md only. One first-screen
+sentence split into three and one parenthesis added naming PDTAdapters.constructed_dilation; the
+bullet on agent assistance and the bullet "The name" under "Provenance and licences", in the
+author's wording; one pointer line to the latter near the top. No Lean file changed; nothing was
+recompiled; SHA256SUMS regenerated for README.md and this file.
+
 HASHES of the two added files (sha256), after pass B; the other Lean files are those of record 4.
 OnConstructed.lean was 131d974df8f90394029b2a04ed58aa48cc4b188694d3c53731adbc4ca370e555 before
 pass B:

@@ -5,6 +5,7 @@ the repository
 [`yang-mills-group/OpenAI-YM-20261028`](https://github.com/yang-mills-group/OpenAI-YM-20261028/tree/3456e5e75cf8d4cd558955a5c7638fba2d68f464),
 commit `3456e5e75cf8d4cd558955a5c7638fba2d68f464` ("the release" below; Lean `v4.32.0`, Mathlib
 `81a5d257c8e410db227a6665ed08f64fea08e997`).
+The name `PDTAdapters` is explained under "Provenance and licences".
 
 ## The two identities
 
@@ -69,8 +70,10 @@ for every order `p`, there are `q`, `S` and `F : YM.Spec.Final C (p.refine q) S`
 `TraceExclusions F` and an `r₀ > 0` such that the divergence of the dilation current of
 `F.sector.energy` in the selected phase, against the centred trace spectator, is nonzero at every
 separated pair closer than `r₀`; the witness is that of the release's theorem
-`YangMills.constructed`, and at the release's `YangMills.su2` with `b = 1` with no hypothesis
-(`PDTAdapters.su2_dilation_not_conserved`); this is checked against the restored public compiled
+`YangMills.constructed` (`PDTAdapters.constructed_dilation` states the release's statement with
+this conclusion and the short-distance rate appended, for the same witness). At the release's
+`YangMills.su2` with `b = 1` the same statement holds with no hypothesis
+(`PDTAdapters.su2_dilation_not_conserved`). Both are checked against the restored public compiled
 build of the release (record 5 of `BUILD.txt`; see "On the release's construction theorem"). The
 limits of scope are listed once, under "What is not proved".
 
@@ -461,8 +464,22 @@ The source contains no `sorry`, `admit`, `axiom`, `native_decide`, `unsafe`, `im
   the licence of the release; `NOTICE` names the declarations that follow the release's
   statements or proof text.**
 - **Author.** Stephanie Alexander (ORCID [0009-0003-7727-2565](https://orcid.org/0009-0003-7727-2565)).
-- The Lean and this README were drafted in AI sessions (Anthropic Claude, in Claude Code)
-  directed and checked by the author. The evidence offered is what can be re-run: the builds and
+- **The name.** PDT is Pisot Dimensional Theory, the author's research programme, which derives
+  physical constants from two polynomials, x³ − x − 1 (real root ρ) and x⁴ − x − 1 (real root
+  Q > 1), with no free parameters. It writes the fine-structure constant as α⁻¹ = (ρQ)¹⁵/π², with
+  15 = dim so(4,2), and the ratio of the electron's electromagnetic and gravitational couplings as
+  α/α_G = (ρQ)²⁰⁹(2Q − 1)/(π²Q²), with 209 = 15² − 15 − 1
+  ([doi:10.5281/zenodo.20417378](https://doi.org/10.5281/zenodo.20417378), §§3–4). For the
+  gravitational exponent, the programme identifies that 15 with the dimension of the space of
+  conformal Killing fields of four-dimensional flat space, the fields that turn every conserved,
+  symmetric, trace-free stress tensor into a conserved current (statements 3 and 7 of the
+  registered entry PALOMAR-2026-11-12-000002). This library adapts that entry's divergence
+  identity for this current (statement 6) to the definitions of the Yang–Mills release.
+- **Agent assistance.** The Lean proofs and this README were written by Claude (Anthropic) agent
+  sessions in Claude Code, directed by the author. Every theorem is checked by the Lean kernel,
+  and each statement was reviewed by a separate agent session that had not written it. The author
+  read the theorem statements and the README before publication. No other model was used. The
+  evidence offered is what can be re-run: the builds and
   axiom listing in `BUILD.txt`, the `example … := rfl` in `PDTAdapters/Divergence.lean`, and the
   control `rate_zero_control`. The builds recorded in `BUILD.txt` were run on the author's
   machine.
