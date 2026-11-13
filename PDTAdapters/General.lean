@@ -10,7 +10,7 @@ The release's `D_cons`, `current` and `divergence` read a table `S` through its 
 (`S.useAt S`). Its ingredients (`Table.class_smooth`, `DiffPlan.Derivatives`, `Table.classMoment`)
 are stated for moments in any table `T` read through the labels of `S` (`S.useAt T`). This file
 states `D_cons` and the conformal divergence identity at that generality and instantiates them at
-each phase `C.ensemble i` of a selection certificate.
+each phase `Y.ensemble i` of a selection certificate.
 -/
 
 set_option autoImplicit false
@@ -149,7 +149,8 @@ variable {C : Family G} {Z : Table C.book} {X : Algebra Z} {Y : OS.Selection Z}
   {h : Z.RealSpin}
 
 /-- **Per phase.** In every phase `Y.ensemble i` of a materialized selection, the divergence of
-the conformal current of the stress `X.energy` is the trace insertion in that phase. -/
+the conformal current of the stress `X.energy` is `(∂·V)/4` times the trace insertion in that
+phase. -/
 theorem phase_conformal_divergence (M : Materializes X Y h) (i : Y.space.X) (V : E4 → E4)
     (hv : ∀ b : Axis, ContDiff ℝ ∞ (fun z => V z b)) (hc : conformal V) {x : Points n}
     (q : Fin n → Z.Tag) {y : E4} (hy : Points.cons y x ∈ conf _) :

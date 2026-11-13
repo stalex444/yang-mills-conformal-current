@@ -1,3 +1,228 @@
+PDTAdapters -- build records
+
+An add-on library for the Lean source distribution in the repository
+yang-mills-group/OpenAI-YM-20261028 at commit 3456e5e75cf8d4cd558955a5c7638fba2d68f464
+("the release"). Toolchain of the release: Lean v4.32.0, Mathlib
+81a5d257c8e410db227a6665ed08f64fea08e997. Not a standalone Lake package: it is compiled inside a
+checkout of the release, with two lines appended to the release's lakefile.toml:
+
+    [[lean_lib]]
+    name = "PDTAdapters"
+
+This file holds two records, both made on 2026-11-13:
+
+  RECORD 2  the current version of the library: the commit that follows 41856c2f and adds the
+            module PDTAdapters/OnFinal.lean. It comes first.
+  RECORD 1  commit 41856c2f, the earlier public commit, including its clean-checkout build. It is
+            kept below as it was written; its counts, job numbers, hashes and line numbers are
+            those of that commit.
+
+================================================================================================
+RECORD 2 -- the current version (2026-11-13, 15:33Z to 15:40Z)
+================================================================================================
+
+Machine: macOS 26.6.2, arm64 (Apple M4, 10 cores).
+Lean (version 4.32.0, arm64-apple-darwin24.6.0, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35,
+Release); Lake version 5.0.0-src+8c9756b.
+
+What changed since commit 41856c2f:
+  - added: the module PDTAdapters/OnFinal.lean (7 theorems), imported by the root. It imports
+    YM.Next.MAXWELL.Current, so the root now needs 411 modules of the release (was 406); the
+    total with PDTAdapters.FreeControl is unchanged, 441.
+  - comment text only in PDTAdapters/Divergence.lean, PDTAdapters/General.lean,
+    PDTAdapters/TraceStep.lean and the docstring of the root. No statement and no proof text of
+    the six earlier modules was changed (`git diff 41856c2f` on those three files shows docstring
+    and module-comment lines only). PDTAdapters/Conformal.lean, PDTAdapters/Det.lean and
+    PDTAdapters/FreeControl.lean are byte-identical to 41856c2f.
+  - Axioms.lean lists the 7 added theorems (54 lines of output, was 47); the root prints 34 axiom
+    lines (was 27).
+  - README.md, NOTICE and this file.
+
+Where it was built. This record is an INCREMENTAL build in the working checkout of the release
+in which the library was written, not a clean checkout. The clean-checkout procedure of record 1
+was not repeated for this commit: it needs about 1.1 GiB more disk than was free.
+
+------------------------------------------------------------------------------------------------
+WORKING CHECKOUT -- incremental build and re-elaboration
+------------------------------------------------------------------------------------------------
+
+Release commit 3456e5e75cf8d4cd558955a5c7638fba2d68f464; `git status --short` shows
+" M lakefile.toml", "?? .lake/", "?? Axioms.lean", "?? PDTAdapters.lean", "?? PDTAdapters/";
+`git diff lakefile.toml` is the same two added lines (blob 37691da -> 3a7789d). The eight library
+files and Axioms.lean of this commit were copied in. (The directory PDTAdapters/ of this tree
+also holds three scratch files from earlier checks; no target imports them and they are not part
+of the library.) The compiled modules of the release already in the tree were replayed, not
+recompiled.
+
+  lake build PDTAdapters                 (start 15:33:40Z, 13 s)
+    exit code 0, "Build completed successfully (3728 jobs).", no warning and no error line.
+    Recompiled from source: PDTAdapters.General, .TraceStep, .OnFinal and the root. Replayed:
+    PDTAdapters.Conformal, .Det, .Divergence (each already compiled from its present source)
+    and the modules of the release. The root printed 34 `#print axioms` lines, each
+    [propext, Classical.choice, Quot.sound].
+  lake build PDTAdapters.FreeControl     (start 15:33:53Z, 2 s)
+    exit code 0, "Build completed successfully (3616 jobs)." (all jobs replayed).
+  Re-elaboration from source of each of the seven modules, against the stored imports:
+    lake env lean -DmaxHeartbeats=0 -DmaxRecDepth=4096 PDTAdapters/Conformal.lean    exit 0, no output
+    lake env lean -DmaxHeartbeats=0 -DmaxRecDepth=4096 PDTAdapters/Divergence.lean   exit 0, no output
+    lake env lean -DmaxHeartbeats=0 -DmaxRecDepth=4096 PDTAdapters/General.lean      exit 0, no output
+    lake env lean -DmaxHeartbeats=0 -DmaxRecDepth=4096 PDTAdapters/Det.lean          exit 0, no output
+    lake env lean -DmaxHeartbeats=0 -DmaxRecDepth=4096 PDTAdapters/TraceStep.lean    exit 0, no output
+    lake env lean -DmaxHeartbeats=0 -DmaxRecDepth=4096 PDTAdapters/OnFinal.lean      exit 0, no output
+    lake env lean -DmaxHeartbeats=0 -DmaxRecDepth=4096 PDTAdapters/FreeControl.lean  exit 0, no output
+    (maxHeartbeats = 0 and maxRecDepth = 4096 are the leanOptions of the release's lakefile.)
+  lake env lean -DmaxHeartbeats=0 -DmaxRecDepth=4096 Axioms.lean
+    exit code 0, 54 lines, listed under "AXIOMS" below.
+  Compiled modules under .lake/build/lib/lean/YM afterwards: 441 (of the 9,457 Lean files under
+  YM/ in the release).
+
+------------------------------------------------------------------------------------------------
+CHECKS RE-RUN (working checkout, in a file importing PDTAdapters and PDTAdapters.FreeControl)
+------------------------------------------------------------------------------------------------
+
+- example : @PDTAdapters.divergence_of_conformal_killing = @YM.Work.A01.divergence := rfl
+    accepted (exit 0). The same `example` is line 94 of PDTAdapters/Divergence.lean. Both sides
+    are proofs, so what is checked is that the two statements are definitionally equal.
+- Negative control:
+    example : @PDTAdapters.killing_divergenceIn = @YM.Work.A01.divergence := rfl
+    rejected, "Type mismatch" (exit 1).
+- PDTAdapters.rate_zero_control: compiles (PDTAdapters/TraceStep.lean); `#check` prints its
+  statement; its axiom line is in the listing below.
+- The selected phase is the phase at the selected index: the term
+    PDTAdapters.final_phase_dilation_divergence_center F F.α.atPoint hy
+  is accepted at the statement written with `selected F` and `center F`.
+- Each of the 50 release names in the first column of the conventions table of README.md, and
+  YM.Work.A01.divergence, YM.Maxwell.Free.radial_K, .current_div and .radial_flux, is present in
+  this environment (Lean.Environment.contains). The eight names that README.md says are read from
+  the release's source are absent from this environment, as stated there.
+- The hypothesis text: lines 225 and 240 of PDTAdapters/TraceStep.lean are identical to line 93
+  of YM/Nonperturbative/HeadlineSpec.lean, and lines 226 and 241 differ from its line 94 only by
+  `c` in place of `Trace.Verse.award G` (diff of the text). Lines 93-94 are the text of the field
+  shortDistance of TraceExclusions, declared at line 92. Equality of the elaborated terms was
+  not checked.
+
+------------------------------------------------------------------------------------------------
+AXIOMS (54 declarations: 50 theorems, 3 definitions, 1 abbreviation)
+------------------------------------------------------------------------------------------------
+
+'PDTAdapters.conformal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.killing_diagonal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.killing_divergence' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.killing_conformal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.D_coordinate' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.dilation_divergence' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.dilation_conformal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.contraction' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.front_trace' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.front_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.conformal_divergence' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.conformal_divergence_ofReal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.divergence_of_conformal_killing' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.dilation_smooth' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.dilation_divergence_trace' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.cons_head_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.stressTrace_eq_zero_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.currentIn' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.currentIn_self' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.frontCaps' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.frontIn' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.frontIn_eval' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.smooth_consIn' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.D_consIn' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.conformal_divergenceIn' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.killing_divergenceIn' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.dilation_divergence_traceIn' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.phase_conformal_divergence' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.phase_dilation_divergence_trace' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.final_phase_conformal_divergence' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.det_invariant' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.at_unitIn' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.centered_front' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.dilation_divergence_centerIn' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.rate_ne_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.rate_zero_control' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.opposed_conf' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.opposed_conf_of_ne' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.selected_dilation_divergence_of_ne' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.selected_dilation_divergence' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.selected_axis_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.selected_dilation_divergence_at' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.selected_dilation_rate' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.selected_dilation_not_conserved' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.final_conformal_divergence' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.final_stressTrace_eq_zero_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.final_phase_dilation_divergence_center' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.final_dilation_divergence_center' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.killing_of_conformal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.killing_iff_conformal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.conformal_freeKilling' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.polStress_trace' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.free_stressTrace' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.free_dilation_divergence' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+No other axiom appears. The eight Lean files of the library contain none of the words sorry,
+admit, axiom, native_decide, unsafe, implemented_by, opaque (grep -E with word boundaries; the
+`#print axioms` lines of the root do not match the word "axiom").
+
+------------------------------------------------------------------------------------------------
+HASHES (sha256)
+------------------------------------------------------------------------------------------------
+
+1a5afeb3a749097b1c9188d8db669baf912da0e2fc4d35fb1b3294403dcdd290  PDTAdapters.lean
+1869e184a7789b46a4bed1cb4f1e09ec8071c14aeecc4c52348fc229ad8dfd3b  PDTAdapters/Conformal.lean
+66267968223c7ec7251ae1cc53779cdf014ae9a5baf3fcc7bd56d680a883dce2  PDTAdapters/Divergence.lean
+22f453d66a5b01a3b3c8d810dbe30e6e2ea1973b5df6bb4a0259c21cc3dc9bc5  PDTAdapters/General.lean
+7436e74424ec45d810247997db253bb259753532c43ea75ab7f2230ba4b5e8d8  PDTAdapters/Det.lean
+94914e30e57c5f1921e6cf6838f79d80f084d31a0d177b463ba9b9955fee2dd9  PDTAdapters/TraceStep.lean
+b81a5eabf3757f6346a66ba6c2c0c205e7f8145d3dbfacc8f8c43ab6b6c4d50b  PDTAdapters/OnFinal.lean
+3d1c4075d232ff536738e118526decf09cc27871c55e00dda5fe2d98b88120f1  PDTAdapters/FreeControl.lean
+8adcfbcafae338b02849598d10a53af52ae4f94a8af34bd12e25bb9ed6ddc5ec  Axioms.lean
+
+The eight library files and Axioms.lean are byte-identical in this repository and in the working
+checkout in which record 2 was built (cmp). SHA256SUMS lists every file of this repository except
+itself.
+
+------------------------------------------------------------------------------------------------
+IMPORT CLOSURES (counted by reading the import lines of the release's files)
+------------------------------------------------------------------------------------------------
+
+  PDTAdapters (root)                               411 modules of the release
+  PDTAdapters and PDTAdapters.FreeControl          441
+  PDTAdapters.Det alone                              4
+  YM.Work.A01.Conserve                             267
+  YM.Nonperturbative.HeadlineSpec                6,563   (not built)
+  YM.TraceExtension.Verse.Day                    5,874   (not built)
+  YM.Trace.FreeScalar                              338   (not built)
+
+The count 441 agrees with the number of compiled modules under YM/ in the working checkout. The
+split 411 + 30 between the two targets is from the import lines; it was not observed in a clean
+build of this commit (record 1 observed 406 + 35 for 41856c2f).
+
+------------------------------------------------------------------------------------------------
+NOT DONE, NOT CHECKED
+------------------------------------------------------------------------------------------------
+
+- A clean-checkout build of this commit (record 1 has one for 41856c2f). The job counts above
+  are those of the incremental build; the times are not comparable with record 1's.
+- `lake exe cache get`, and the `git clone` of this repository.
+- The release's default targets (WilsonReference, WilsonConstruction) were not built, and none of
+  the release's verification files or scripts was run. No Comparator run.
+- YM/Nonperturbative/HeadlineSpec.lean and YM/TraceExtension/Verse/Day.lean were not built. So
+  the hypothesis of selected_dilation_rate and selected_dilation_not_conserved has not been
+  discharged from the release's TraceExclusions.shortDistance, and the term
+      fun h => selected_dilation_not_conserved F (Trace.Verse.award G) h.shortDistance h.positive.ne'
+  has not been elaborated. No Spec.Final is constructed in the built modules: the theorems that
+  take an `F : Spec.Final C f S` are statements about any such `F`.
+- selected_axis_shape re-proves the statement of the release's YM.Trace.Verse.axis_shape, and
+  polStress_trace the statement of the release's YM.Trace.trace_free; neither pair has been
+  compared in one environment, because those declarations' modules are not built.
+- The converse of conformal_freeKilling is not proved.
+- Linux was not tried; the builds above are on macOS arm64.
+
+================================================================================================
+RECORD 1 -- commit 41856c2f (kept as written; the text below is that commit's BUILD.txt)
+================================================================================================
+
 PDTAdapters -- build record of 2026-11-13
 
 An add-on library for the Lean source distribution in the repository

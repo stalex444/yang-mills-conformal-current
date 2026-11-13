@@ -44,7 +44,8 @@ section general
 variable {G : Gauge} {L : Register G} {S T : Table L} {n : ℕ}
 
 /-- The release's `Table.at_unit` with the moments read in a second table `T` that respects `S`:
-the unit label in the front slot drops out. -/
+the unit label in the front slot drops out. The proof follows the release's proof of
+`YM.Table.at_unit` (`YM/Euclid/Lift.lean`). -/
 theorem at_unitIn (hr : T.respects S) (ht : T.Hierarchy) {x : Points (n+1)} (hx : x ∈ conf (n+1))
     (v : Fin n → S.Tag) (d : ℕ) :
     S.useAt T x (Fin.cons ⟨d,S.unit d⟩ v) = S.useAt T (Points.tail x) v := by

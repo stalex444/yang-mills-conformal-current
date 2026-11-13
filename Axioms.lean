@@ -2,14 +2,14 @@ import PDTAdapters
 import PDTAdapters.FreeControl
 
 /-!
-# Axioms of every declaration of the six modules
+# Axioms of every declaration of the seven modules
 
 Not part of the library. Copy this file into the checkout of the release beside
 `PDTAdapters.lean`, build `PDTAdapters` and `PDTAdapters.FreeControl`, and run
 
     lake env lean -DmaxHeartbeats=0 -DmaxRecDepth=4096 Axioms.lean
 
-The expected output is 47 lines, each ending in `[propext, Classical.choice, Quot.sound]`
+The expected output is 54 lines, each ending in `[propext, Classical.choice, Quot.sound]`
 (recorded in `BUILD.txt`).
 -/
 
@@ -62,6 +62,14 @@ The expected output is 47 lines, each ending in `[propext, Classical.choice, Quo
 #print axioms PDTAdapters.selected_dilation_divergence_at
 #print axioms PDTAdapters.selected_dilation_rate
 #print axioms PDTAdapters.selected_dilation_not_conserved
+-- OnFinal.lean
+#print axioms PDTAdapters.final_conformal_divergence
+#print axioms PDTAdapters.final_stressTrace_eq_zero_iff
+#print axioms PDTAdapters.final_phase_dilation_divergence_center
+#print axioms PDTAdapters.final_dilation_divergence_center
+#print axioms PDTAdapters.killing_of_conformal
+#print axioms PDTAdapters.killing_iff_conformal
+#print axioms PDTAdapters.conformal_freeKilling
 -- FreeControl.lean
 #print axioms PDTAdapters.polStress_trace
 #print axioms PDTAdapters.free_stressTrace

@@ -3,7 +3,7 @@ import YM.TraceExtension.Centered
 import PDTAdapters.Conformal
 
 /-!
-# The divergence of a conformal current is the trace insertion
+# The divergence of a conformal current is `(∂·V)/4` times the trace insertion
 
 For the release's conserved stress `J` on a smooth table `S` read through its own labels, and a
 conformal Killing field `V`, the divergence of the release's `current J V` at separated points is
@@ -31,7 +31,9 @@ theorem front_zero (q : Fin n → S.Tag) (x : Points (n+1)) (d : ℕ) :
   rw [← front_eval, map_zero]
 
 /-- **The identity.** Hypotheses of the release's `YM.Work.A01.divergence`, with `conformal V`
-in place of `killing V`. The scalar action is the real action on `ℂ`, as in `current`. -/
+in place of `killing V`. The scalar action is the real action on `ℂ`, as in `current`.
+The proof follows the release's proof of `YM.Work.A01.divergence` (`YM/Work/A01/Conserve.lean`)
+up to its last step, where `contraction` takes the place of the antisymmetry argument. -/
 theorem conformal_divergence (hs : S.Smooth) (W : DiffPlan S) (hd : W.Derivatives S)
     {H : S.RealSpin} (J : S.Stress) (hJ : Conserved W H J) (V : E4 → E4)
     (hv : ∀ b : Axis, ContDiff ℝ ∞ (fun z => V z b)) (hc : conformal V) {x : Points n}
@@ -78,8 +80,8 @@ theorem conformal_divergence_ofReal (hs : S.Smooth) (W : DiffPlan S) (hd : W.Der
         S.useAt S (Points.cons y x) (Fin.cons ⟨4, stressTrace J⟩ q) := by
   rw [conformal_divergence hs W hd J hJ V hv hc q hy, Complex.real_smul, smul_eq_mul]
 
-/-- The release's `YM.Work.A01.divergence`, recovered from `conformal_divergence` and
-`killing_conformal`: the new identity contains theirs. -/
+/-- The statement of the release's `YM.Work.A01.divergence`, derived from `conformal_divergence`
+and `killing_conformal`: the case of zero divergence. -/
 theorem divergence_of_conformal_killing (hs : S.Smooth) (W : DiffPlan S) (hd : W.Derivatives S)
     {H : S.RealSpin} (J : S.Stress) (hJ : Conserved W H J) (V : E4 → E4)
     (hv : ∀ b : Axis, ContDiff ℝ ∞ (fun z => V z b)) (hk : killing V) {x : Points n}
