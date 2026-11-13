@@ -26,7 +26,8 @@ The theorems of this file take, besides `F : Spec.Final C f S`, one hypothesis
 
 This file proves no instance of `TraceExclusions` and constructs no `F`. The release's
 `YangMills.constructed` states `Headline.TraceExclusions F` for its witness (`Construction.lean`,
-read in source; that module is not among those this file was checked against).
+line 28); `PDTAdapters/OnConstructed.lean`, which imports that module, applies the theorems of
+this file to that clause.
 
 The `example` at the end checks in the kernel that the statement of `selected_axis_shape`
 (`PDTAdapters/TraceStep.lean`) and that of the release's `YM.Trace.Verse.axis_shape`
@@ -78,9 +79,10 @@ theorem headline_euclidean_ne_zero (H : YM.Nonperturbative.Headline.TraceExclusi
 
 /-- **At every pair at short distance.** Under `H : Headline.TraceExclusions F`, there is
 `r₀ > 0` such that, for every one-point configuration `x` and every `y` with `y ≠ x 0` and
-`‖y - x 0‖ < r₀` (the same `r₀` for all `x`), the divergence at `y` of the dilation current of `F.sector.energy`, read in `selected F` against the
-spectator `center F` at `x`, is nonzero. The proof combines `selected_dilation_divergence_at`
-with `headline_euclidean_ne_zero` (the fields `H.shortDistance` and `H.positive`). -/
+`‖y - x 0‖ < r₀` (the same `r₀` for all `x`), the divergence at `y` of the dilation current of
+`F.sector.energy`, read in `selected F` against the spectator `center F` at `x`, is nonzero. The
+proof combines `selected_dilation_divergence_at` with `headline_euclidean_ne_zero` (the fields
+`H.shortDistance` and `H.positive`). -/
 theorem headline_dilation_not_conserved_at
     (H : YM.Nonperturbative.Headline.TraceExclusions.{u,v} F) :
     ∃ r₀ : ℝ, 0 < r₀ ∧ ∀ (x : Points 1) (y : E4), y ≠ x 0 → ‖y - x 0‖ < r₀ →

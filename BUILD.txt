@@ -3,8 +3,7 @@ PDTAdapters -- build records
 An add-on library for the Lean source distribution in the repository
 yang-mills-group/OpenAI-YM-20261028 at commit 3456e5e75cf8d4cd558955a5c7638fba2d68f464
 ("the release"). Toolchain of the release: Lean v4.32.0, Mathlib
-81a5d257c8e410db227a6665ed08f64fea08e997. Not a standalone Lake package: it is compiled inside a
-checkout of the release, with two lines appended to the release's lakefile.toml:
+81a5d257c8e410db227a6665ed08f64fea08e997. Not a standalone Lake package. The build of README.md, section "Build" (records 1 to 3), compiles it inside a checkout of the release, with two lines appended to the release's lakefile.toml (records 4 and 5 compile its modules with `lean -o` against a restored compiled build of the release, without Lake):
 
     [[lean_lib]]
     name = "PDTAdapters"
@@ -13,9 +12,12 @@ This file holds five records, all made on 2026-11-13:
 
   RECORD 5  the commit that follows 82926626: adds PDTAdapters/OnConstructed.lean and
             AxiomsOnConstructed.lean, compiled with `lean -o` against the restored compiled build
-            of the release, as in record 4; and the commit after it (corrections after review:
+            of the release, as in record 4; the commit after it (corrections after review:
             two docstrings of PDTAdapters/OnConstructed.lean and the text files), with pass B
-            below. It comes first.
+            below; and the commit after that (README.md only, nothing recompiled), under
+            "AFTER PASS B"; and the commit after that (corrections from a whole-repository read:
+            the module docstring and one theorem docstring of PDTAdapters/OnHeadline.lean, and
+            the text files), with pass C below. It comes first.
   RECORD 4  the commit that follows 359eaf6d: adds PDTAdapters/OnHeadline.lean and
             AxiomsOnHeadline.lean, and compiles every module of the library with `lean -o`
             against a restored compiled build of the release, without Lake; and the commit after
@@ -30,10 +32,11 @@ This file holds five records, all made on 2026-11-13:
   RECORD 1  commit 41856c2f, the earlier public commit, including its clean-checkout build. It is
             kept below as it was written; its counts, job numbers, hashes and line numbers are
             those of that commit.
+The 'Not done' lists of records 1 and 2 describe those commits; records 4 and 5 check several of their items.
 
 ================================================================================================
 RECORD 5 -- PDTAdapters/OnConstructed.lean, against the restored compiled build (2026-11-13,
-            19:19Z to 19:32Z; pass B 19:49Z to 19:52Z)
+            19:19Z to 19:32Z; pass B 19:49Z to 19:52Z; pass C 20:23Z to 20:25Z)
 ================================================================================================
 
 Machine: macOS 26.6.2, arm64 (Apple M4). Lean (version 4.32.0, arm64-apple-darwin24.6.0, commit
@@ -52,8 +55,8 @@ The release's compiled modules: the public compiled build "lean-build-3456e5e", 
 The restore directory holds 9,470 .olean files (counted in this record): 9,457 under YM/ and 13
 root-level modules (Challenge, ChallengeSpec, ConcreteSU2, Construction, ContactBridge,
 ContactSpec, HierarchyBridge, PublicTheory, PublicView, PublicWilson, Solution, TraceBridge,
-WilsonBridge). SHA-256 of the archive, as written in four digest files made while the archive was
-read on 2026-11-13 (15:12Z to 18:46Z), each equal to the checksum published with the build:
+WilsonBridge). SHA-256 of the archive ym-build-3456e5e.tgz (its two published parts joined), as
+written in four digest files made while the archive was read on 2026-11-13 (15:12Z to 18:46Z), each equal to the checksum published with the build:
 07c145c36a45948ac55044a98d5626c201fe7ad6214d627a0739694c8e464707 (not recomputed in this record).
 Limits, as in record 4:
   - a restore of compiled .olean files only: no .ilean, no C files, no Lake traces;
@@ -64,10 +67,13 @@ Limits, as in record 4:
     record 4.
 
 Commands. Run from the root of this repository, one Lean process at a time, with
-  LEAN_PATH = <out> : <restore>/lib/lean : the .lake/build/lib/lean directories of eight of the
-              release's nine packages (all but Cli)
+  LEAN_PATH = <out> : <restore>/lib/lean : the .lake/build/lib/lean directories of the release's packages
+              LeanSearchClient, Qq, aesop, batteries, importGraph, mathlib, plausible and proofwidgets (all but Cli;
+              the checkout's .lake/packages, revisions as in the release's lake-manifest.json)
   lean -R . -DmaxHeartbeats=0 -DmaxRecDepth=4096 -o <out>/<Module/Path>.olean <Module/Path>.lean
-(<out> an empty output directory). Times are wall-clock, from /usr/bin/time -l, which also gives
+(<out> an empty output directory, with <out>/PDTAdapters created first: lean -o does not create directories).
+(`lean` is the binary of the toolchain leanprover/lean4:v4.32.0, for example `elan run leanprover/lean4:v4.32.0 lean`; this repository has no lean-toolchain file, so a plain `lean` run from its root is elan's default toolchain.)
+Times are wall-clock, from /usr/bin/time -l, which also gives
 the peak resident set size. The modules of this library that OnConstructed.lean needs, compiled
 from source on this machine, 19:19:36Z to 19:19:58Z:
     PDTAdapters/Conformal.lean      exit 0, no output, 2.3 s
@@ -181,11 +187,43 @@ bullet on agent assistance and the bullet "The name" under "Provenance and licen
 author's wording; one pointer line to the latter near the top. No Lean file changed; nothing was
 recompiled; SHA256SUMS regenerated for README.md and this file.
 
-HASHES of the two added files (sha256), after pass B; the other Lean files are those of record 4.
+PASS C (2026-11-13, 20:23:59Z to 20:24:44Z), for the commit after the one above (corrections from
+a whole-repository read). Changed among the Lean files: PDTAdapters/OnHeadline.lean only, in its
+module docstring (the sentence on YangMills.constructed now points to Construction.lean, line 28,
+and to PDTAdapters/OnConstructed.lean) and in the docstring of headline_dilation_not_conserved_at
+(rewrapped to 100 columns). With comments removed, the file is identical to its text before
+this pass (diff). No statement, proof, name or import changed. Also changed: README.md, NOTICE,
+this file, SHA256SUMS. Same machine, Lean, flags and LEAN_PATH composition as above; <out> a fresh,
+empty directory with <out>/PDTAdapters created first. Every module compiled from source, in
+import order:
+    PDTAdapters/Conformal.lean      exit 0, no output, 3.0 s
+    PDTAdapters/Det.lean            exit 0, no output, 1.3 s
+    PDTAdapters/Divergence.lean     exit 0, no output, 2.6 s
+    PDTAdapters/General.lean        exit 0, no output, 2.7 s
+    PDTAdapters/TraceStep.lean      exit 0, no output, 1.9 s
+    PDTAdapters/OnFinal.lean        exit 0, no output, 1.6 s
+    PDTAdapters/FreeControl.lean    exit 0, no output, 1.4 s
+    PDTAdapters/OnHeadline.lean     exit 0, no output, 9.9 s, peak 7.5 GB
+    PDTAdapters/OnConstructed.lean  exit 0, no output, 10.4 s, peak 8.7 GB
+    PDTAdapters.lean                exit 0, 34 `#print axioms` lines, each
+                                    [propext, Classical.choice, Quot.sound]
+  Axioms.lean                       exit 0, 54 lines, identical (diff) to the AXIOMS listing of
+                                    record 2
+  AxiomsOnHeadline.lean             exit 0, 4 lines, identical (diff) to those of record 4
+  AxiomsOnConstructed.lean          exit 0, 4 lines, identical (diff) to those above
+  Not re-run in this pass: the scratch-file kernel checks (i)-(iii), the import-closure counts and
+  the hypothesis-deletion copies of this record and of record 4 (the statements and proofs they
+  concern did not change). The build under "Build" in README.md was not re-run: none of the nine
+  files it uses changed (cmp against the working checkout of records 2 and 3: identical).
+
+HASHES of the two added files (sha256), after pass B; the other Lean files are those of record 4,
+except PDTAdapters/OnHeadline.lean, changed in pass C (docstrings only; it was
+10a932834e15b5ac663a16c926ca01406614c7cf649568e94583cee3ae4bbd9b before pass C).
 OnConstructed.lean was 131d974df8f90394029b2a04ed58aa48cc4b188694d3c53731adbc4ca370e555 before
 pass B:
   ef807b3fe64ed0b26b151ad6bb4f7a0fe5556a7e462a205c1a2b5745f78b730e  PDTAdapters/OnConstructed.lean
   5e0ded7c0d626a7deee03db046d7aa14b56b8c6f9d312d96014f7ffff770f01a  AxiomsOnConstructed.lean
+  70787bd17f2ba19471839faf68dc7064eebaa59796b0d98dbce60ce2d68d77fc  PDTAdapters/OnHeadline.lean (after pass C)
 SHA256SUMS lists every file of this repository except itself.
 
 ================================================================================================
@@ -209,7 +247,7 @@ What changed since commit 359eaf6d:
 
 The release's compiled modules. The public compiled build "lean-build-3456e5e" of the repository
 scottnarmstrong/yang-mills-informalization (published as built on Linux x86-64 for the release's
-commit 3456e5e7). SHA-256 of its archive, as recorded when the archive was extracted on this
+commit 3456e5e7). SHA-256 of its archive ym-build-3456e5e.tgz (its two published parts joined), as recorded when the archive was extracted on this
 machine and equal to the checksum published with the build:
 07c145c36a45948ac55044a98d5626c201fe7ad6214d627a0739694c8e464707 (not recomputed in this
 record). Limits:
@@ -228,11 +266,14 @@ import closure of the file it compiles; no run of this record imports Constructi
 top-level module of the release.
 
 Commands. Run from the root of this repository, one Lean process at a time, with
-  LEAN_PATH = <out> : <restore>/lib/lean : the .lake/build/lib/lean directories of eight of the
-              release's nine packages (all but Cli)
+  LEAN_PATH = <out> : <restore>/lib/lean : the .lake/build/lib/lean directories of the release's packages
+              LeanSearchClient, Qq, aesop, batteries, importGraph, mathlib, plausible and proofwidgets (all but Cli;
+              the checkout's .lake/packages, revisions as in the release's lake-manifest.json)
   lean -R . -DmaxHeartbeats=0 -DmaxRecDepth=4096 -o <out>/<Module/Path>.olean <Module/Path>.lean
-(<out> is an empty output directory; maxHeartbeats = 0 and maxRecDepth = 4096 are the leanOptions
-of the release's lakefile). Each module of this library was compiled from source, in import order.
+(<out> is an empty output directory, with <out>/PDTAdapters created first: lean -o does not create directories; maxHeartbeats = 0 and maxRecDepth = 4096 are the leanOptions
+of the release's lakefile).
+(`lean` is the binary of the toolchain leanprover/lean4:v4.32.0, for example `elan run leanprover/lean4:v4.32.0 lean`; this repository has no lean-toolchain file, so a plain `lean` run from its root is elan's default toolchain.)
+Each module of this library was compiled from source, in import order.
 Pass B, 18:50:36Z to 18:51:51Z (pass A, 18:42Z to 18:45Z, gave the same exit codes and output):
     PDTAdapters/Conformal.lean      exit 0, no output
     PDTAdapters/Det.lean            exit 0, no output

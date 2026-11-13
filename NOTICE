@@ -9,10 +9,12 @@ License, Version 2.0, and whose NOTICE supplies its attributions.
 
 Several declarations in this library follow statements or proof text of that
 distribution:
-  PDTAdapters/Divergence.lean, conformal_divergence: the proof follows the
-    proof of YM.Work.A01.divergence (YM/Work/A01/Conserve.lean) up to its
-    last step; divergence_of_conformal_killing has the statement of that
-    theorem. cons_head_tail states as a lemma a step that the distribution
+  PDTAdapters/Divergence.lean, conformal_divergence: the hypotheses are those
+    of the statement of YM.Work.A01.divergence (YM/Work/A01/Conserve.lean),
+    in its text, with conformal V in place of killing V; the proof follows
+    the proof of that theorem up to its last step;
+    divergence_of_conformal_killing has the statement of that theorem.
+    cons_head_tail states as a lemma a step that the distribution
     proves inline (YM/Euclid/Comparator.lean).
   PDTAdapters/General.lean (all against YM/Work/A01/Conserve.lean), with
     the moments read in a second table throughout. currentIn: the definition
@@ -34,8 +36,8 @@ distribution:
     constant in place of Trace.Verse.award G.
   PDTAdapters/FreeControl.lean, polStress_trace: the statement of
     YM.Trace.trace_free (YM/Trace/FreeScalar.lean), with a different proof.
-  PDTAdapters/OnHeadline.lean: each theorem takes as its hypothesis the
-    release's structure YM.Nonperturbative.Headline.TraceExclusions
+  PDTAdapters/OnHeadline.lean: each theorem takes as its hypothesis that
+    distribution's structure YM.Nonperturbative.Headline.TraceExclusions
     (YM/Nonperturbative/HeadlineSpec.lean). The statement of
     headline_dilation_rate is the text of its field shortDistance (lines
     93-94) with the divergence of the dilation current in place of
@@ -47,4 +49,8 @@ distribution:
     constructed_of_constructed_dilation has the statement of that theorem,
     written as the type of its application. su2_dilation_not_conserved uses
     YangMills.su2 and YangMills.su2Simple (ConcreteSU2.lean).
+    The statements of constructed_dilation_not_conserved and
+    su2_dilation_not_conserved begin with the opening text of the statement
+    of YangMills.constructed (lines 16 and 18-19), the latter at
+    YangMills.su2 and b = 1.
 The other statements and proofs are this library's.
