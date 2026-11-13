@@ -34,4 +34,10 @@ distribution:
     constant in place of Trace.Verse.award G.
   PDTAdapters/FreeControl.lean, polStress_trace: the statement of
     YM.Trace.trace_free (YM/Trace/FreeScalar.lean), with a different proof.
+  PDTAdapters/OnHeadline.lean: each theorem takes as its hypothesis the
+    release's structure YM.Nonperturbative.Headline.TraceExclusions
+    (YM/Nonperturbative/HeadlineSpec.lean). The statement of
+    headline_dilation_rate is the text of its field shortDistance (lines
+    93-94) with the divergence of the dilation current in place of
+    euclidean F s.
 The other statements and proofs are this library's.
