@@ -77,8 +77,8 @@ theorem headline_euclidean_ne_zero (H : YM.Nonperturbative.Headline.TraceExclusi
   rate_ne_zero _ H.shortDistance H.positive.ne'
 
 /-- **At every pair at short distance.** Under `H : Headline.TraceExclusions F`, there is
-`r₀ > 0` such that, for one point `x` and every `y` with `y ≠ x 0` and `‖y - x 0‖ < r₀`, the
-divergence at `y` of the dilation current of `F.sector.energy`, read in `selected F` against the
+`r₀ > 0` such that, for every one-point configuration `x` and every `y` with `y ≠ x 0` and
+`‖y - x 0‖ < r₀` (the same `r₀` for all `x`), the divergence at `y` of the dilation current of `F.sector.energy`, read in `selected F` against the
 spectator `center F` at `x`, is nonzero. The proof combines `selected_dilation_divergence_at`
 with `headline_euclidean_ne_zero` (the fields `H.shortDistance` and `H.positive`). -/
 theorem headline_dilation_not_conserved_at

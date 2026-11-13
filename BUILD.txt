@@ -13,15 +13,22 @@ This file holds four records, all made on 2026-11-13:
 
   RECORD 4  the commit that follows 359eaf6d: adds PDTAdapters/OnHeadline.lean and
             AxiomsOnHeadline.lean, and compiles every module of the library with `lean -o`
-            against a restored compiled build of the release, without Lake. It is placed at the top.
+            against a restored compiled build of the release, without Lake; and the commit after
+            it (corrections after review: one docstring of PDTAdapters/OnHeadline.lean and the
+            text files), with pass C below. It comes first.
   RECORD 3  the commit that follows 52b2bd2c: docstring changes in PDTAdapters/OnFinal.lean and
             PDTAdapters/FreeControl.lean, with the rebuild and checks run for it.
             The AXIOMS listing of record 2 and its HASHES table (updated for the two files) apply
             to this commit, and to record 4 for the files that record 4 does not add.
+  RECORD 2  commit 52b2bd2c, the commit that follows 41856c2f and adds the module
+            PDTAdapters/OnFinal.lean.
+  RECORD 1  commit 41856c2f, the earlier public commit, including its clean-checkout build. It is
+            kept below as it was written; its counts, job numbers, hashes and line numbers are
+            those of that commit.
 
 ================================================================================================
 RECORD 4 -- PDTAdapters/OnHeadline.lean, against a restored compiled build (2026-11-13,
-            18:42Z to 18:52Z)
+            18:42Z to 18:52Z; pass C 19:08Z to 19:10Z)
 ================================================================================================
 
 Machine: macOS 26.6.2, arm64 (Apple M4). Lean (version 4.32.0, arm64-apple-darwin24.6.0, commit
@@ -32,12 +39,16 @@ What changed since commit 359eaf6d:
     It imports PDTAdapters.TraceStep and the release module YM.Nonperturbative.HeadlineSpec.
   - added: AxiomsOnHeadline.lean, the `#print axioms` lines of the four theorems.
   - README.md, NOTICE, this file and SHA256SUMS.
+  - in the commit after it (corrections after review): the docstring of
+    headline_dilation_not_conserved_at (no statement or proof changed), README.md, this file and
+    SHA256SUMS.
   No other Lean file changed; the build under "Build" in README.md (the root and
   PDTAdapters.FreeControl, 441 modules of the release) is unaffected.
 
 The release's compiled modules. The public compiled build "lean-build-3456e5e" of the repository
-scottnarmstrong/yang-mills-informalization (built on Linux x86-64 for the release's commit
-3456e5e7). SHA-256 of its archive, as recorded when the archive was extracted on this machine:
+scottnarmstrong/yang-mills-informalization (published as built on Linux x86-64 for the release's
+commit 3456e5e7). SHA-256 of its archive, as recorded when the archive was extracted on this
+machine and equal to the checksum published with the build:
 07c145c36a45948ac55044a98d5626c201fe7ad6214d627a0739694c8e464707 (not recomputed in this
 record). Limits:
   - a restore of compiled .olean files only: no .ilean, no C files, no Lake traces;
@@ -79,6 +90,18 @@ Pass B, 18:50:36Z to 18:51:51Z (pass A, 18:42Z to 18:45Z, gave the same exit cod
 'PDTAdapters.headline_dilation_not_conserved' depends on axioms: [propext, Classical.choice, Quot.sound]
 'PDTAdapters.headline_euclidean_ne_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
 'PDTAdapters.headline_dilation_not_conserved_at' depends on axioms: [propext, Classical.choice, Quot.sound]
+Pass C, 19:08:37Z to 19:09:34Z, for the corrections commit, with the same commands and a second
+empty output directory: every module listed above exit 0 with the same output (OnHeadline 28 s);
+Axioms.lean exit 0, 54 lines, identical (diff) to the AXIOMS listing of record 2;
+AxiomsOnHeadline.lean exit 0, the same 4 lines. The hypothesis-deletion check below, re-run on the
+changed file, gave the same errors.
+
+NAMES (scratch files, pass C). A file importing only PDTAdapters.OnHeadline resolves (#check)
+YM.Trace.Verse.axis_shape, YM.Trace.Verse.award, YM.Nonperturbative.Headline.TraceExclusions,
+YM.Trace.rho, YM.Maxwell.Free.radial_motion, YM.Maxwell.Free.moment_force,
+YM.EveryPhase.Stress.tide_div and YM.EveryPhase.Stress.tensor_conserved, and reports
+YM.Trace.trace_free and YangMills.constructed as unknown identifiers (exit 1, on those two only).
+A file importing only YM.Trace.FreeScalar resolves YM.Trace.trace_free (exit 0).
 
 Import closure of PDTAdapters.OnHeadline, counted in the loaded environment
 (Environment.header.moduleNames): 6,563 modules under YM/, the same count as for
@@ -128,15 +151,11 @@ Not done, not checked in this record:
     OnHeadline.lean has not been checked in Lean;
   - Linux was not tried.
 
-HASHES of the two added files (sha256); the other Lean files are those of record 3:
-  1e119659cc6daa7a6e9cff4da64ee7e03f76978b4fcc955976e4b7bf0f326423  PDTAdapters/OnHeadline.lean
+HASHES of the two added files (sha256), at the corrections commit; the other Lean files are those
+of record 3:
+  10a932834e15b5ac663a16c926ca01406614c7cf649568e94583cee3ae4bbd9b  PDTAdapters/OnHeadline.lean
   9274bd6b401ef6808a8acc77c60fc4d4851c602abb2a97de4c7a8424e4bbb8e9  AxiomsOnHeadline.lean
 SHA256SUMS lists every file of this repository except itself.
-  RECORD 2  commit 52b2bd2c, the commit that follows 41856c2f and adds the module
-            PDTAdapters/OnFinal.lean.
-  RECORD 1  commit 41856c2f, the earlier public commit, including its clean-checkout build. It is
-            kept below as it was written; its counts, job numbers, hashes and line numbers are
-            those of that commit.
 
 ================================================================================================
 RECORD 3 -- docstrings of three theorems (2026-11-13, 17:10Z to 17:11Z)

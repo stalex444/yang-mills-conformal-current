@@ -57,10 +57,13 @@ realizing its derivatives. In the selected phase the right side is the release's
 The library also contains two short-distance rate statements in **hypothesis form**
 (`selected_dilation_rate`, `selected_dilation_not_conserved`), the characterization
 `stressTrace_eq_zero_iff`, a control on the release's free Maxwell table, and `det_invariant`:
-see "The theorems". The module `PDTAdapters/OnHeadline.lean`, which the root does not import,
-applies the two rate statements to the fields `shortDistance` and `positive` of the release's
-`YM.Nonperturbative.Headline.TraceExclusions F`: see "On the release's `TraceExclusions`". The
-limits of scope are listed once, under "What is not proved".
+see "The theorems". The module `PDTAdapters/OnHeadline.lean` (not imported by the root) proves
+that for every `F` satisfying the release's `YM.Nonperturbative.Headline.TraceExclusions F`, the
+divergence of the dilation current against the centred trace spectator has the short-distance
+rate `Trace.Verse.award G` and is nonzero at every pair closer than some `r₀ > 0`
+(`PDTAdapters.headline_dilation_rate`, `PDTAdapters.headline_dilation_not_conserved_at`): see
+"On the release's `TraceExclusions`". The limits of scope are listed once, under "What is not
+proved".
 
 ## How the statements are written
 
@@ -111,10 +114,10 @@ those built: `YM.Trace.Verse.axis_shape` and `YM.Trace.Verse.award`
 (`YM/TraceExtension/Foundation/Dilate.lean`), `YM.Maxwell.Free.radial_motion` and
 `YM.Maxwell.Free.moment_force` (`YM/Next/MAXWELL/Taxes.lean`), and
 `YM.EveryPhase.Stress.tide_div` and `YM.EveryPhase.Stress.tensor_conserved` (`YM/EveryPhase/`).
-Four of them, `YM.Trace.Verse.axis_shape`, `YM.Trace.Verse.award`,
-`YM.Nonperturbative.Headline.TraceExclusions` and `YM.Trace.trace_free`, resolve in the
-environment of record 4 of `BUILD.txt`, a restored compiled build of the release (see "On the
-release's `TraceExclusions`").
+Against the restored compiled build of record 4 of `BUILD.txt`, eight of them resolve in the
+environment of `PDTAdapters/OnHeadline.lean` (all but `YM.Trace.trace_free` and
+`YangMills.constructed`), and `YM.Trace.trace_free` in a scratch file that imports
+`YM.Trace.FreeScalar` (see "On the release's `TraceExclusions`").
 
 Two definitions are added by this library for its statements (two more, the abbreviation `frontCaps` and
 the definition `frontIn` in `PDTAdapters/General.lean`, are helpers for the proofs):
@@ -151,7 +154,7 @@ All names are in the namespace `PDTAdapters`.
 | `det_invariant` | `Det.lean` | For a gauge type `G` with `G.Simple` and an endomorphism `A` of `G.Color` that is symmetric (`A.IsSymmetric`) and satisfies `A (G.ad x y) = G.ad x (A y)` for all `x`, `y`: there is a real `c` with `A = c • 1` and `LinearMap.det A = c ^ G.lieDim`. The scalar clause restates the release's `invariant_scalar` (`YM/Gauge/Casimir.lean`) for endomorphisms, and the determinant clause follows from it at once. `det_invariant` is independent of the other theorems: nothing here uses it, and its file imports only `YM/Gauge/Casimir.lean`. | `Gauge`, `Simple`, `Color`, `ad`, `lieDim`, `invariant_scalar` |
 | `dilation_divergence_centerIn` | `TraceStep.lean` | For tables `S`, `T` with `T.respects S` and `T.Hierarchy`, `W : DiffPlan S` with `W.Derivatives T`, `Conserved W H J`, one point `x` and `y ≠ x 0` (`Points.cons y x ∈ conf 2`): the divergence at `y` of `currentIn T J (fun z => z) x` with the single spectator label `theta T J` equals the two-point moment `S.useAt T (Points.cons y x) (fun _ => ⟨4, theta T J⟩)`. | `respects`, `Hierarchy`, `theta`, `useAt`, `Conserved`, `DiffPlan`, `Derivatives`, `conf`, `D` |
 | `selected_dilation_divergence`, `selected_dilation_divergence_of_ne` | `TraceStep.lean` | For `F : Spec.Final C f S` and `0 < r` (respectively `r ≠ 0`): the divergence, at the point `opposed r 0`, of `currentIn (selected F) F.sector.energy (fun z => z)` with the spectator label `center F` at the other point of `opposed r` equals `euclidean F r`. | `Spec.Final`, `selected`, `center`, `opposed`, `euclidean` |
-| `selected_axis_shape` | `TraceStep.lean` | For `F : Spec.Final C f S` and `x ∈ conf 2`: `S.useAt (selected F) x (fun _ => ⟨4, center F⟩) = euclidean F ‖x 0 - x 1‖`. This is the statement of the release's `YM.Trace.Verse.axis_shape` (`YM/TraceExtension/Verse/Day.lean`) in `useAt` form, re-proved here following the proof text of that declaration because its module is not among those built for this library. It is the release's result, proved here a second time, not a result of this library. The two statements are definitionally equal: the `example … := rfl` in `OnHeadline.lean` compiles (record 4 of `BUILD.txt`). | `Spec.Final`, `selected`, `center`, `euclidean`, `useAt`, `conf` |
+| `selected_axis_shape` | `TraceStep.lean` | For `F : Spec.Final C f S` and `x ∈ conf 2`: `S.useAt (selected F) x (fun _ => ⟨4, center F⟩) = euclidean F ‖x 0 - x 1‖`. This is the statement of the release's `YM.Trace.Verse.axis_shape` (`YM/TraceExtension/Verse/Day.lean`) in `useAt` form, re-proved here following the proof text of that declaration because its module is not among those the build under "Build" compiles. It is the release's result, proved here a second time, not a result of this library. The two statements are definitionally equal: the `example … := rfl` in `OnHeadline.lean` compiles (record 4 of `BUILD.txt`). | `Spec.Final`, `selected`, `center`, `euclidean`, `useAt`, `conf` |
 | `selected_dilation_divergence_at` | `TraceStep.lean` | For `F : Spec.Final C f S`, one point `x` and `y ≠ x 0`: the divergence at `y` of `currentIn (selected F) F.sector.energy (fun z => z) x` with the spectator label `center F` equals `euclidean F ‖y - x 0‖`. | as above |
 | `selected_dilation_rate` | `TraceStep.lean` | **Hypothesis form.** For `F : Spec.Final C f S` and a real `c`: IF `(s⁸ (log s⁻¹)²) • euclidean F s → c` as `s → 0⁺`, THEN the same multiple of the divergence of the dilation current at `opposed s` (as in `selected_dilation_divergence`) tends to `c` as `s → 0⁺`. With the release's field `shortDistance` as the hypothesis and `c = Trace.Verse.award G`: `headline_dilation_rate` (`OnHeadline.lean`). | `Spec.Final`, `selected`, `center`, `opposed`, `euclidean` |
 | `selected_dilation_not_conserved` | `TraceStep.lean` | **Hypothesis form.** Under the same hypothesis and `c ≠ 0`: there is `r₀ > 0` such that the divergence of the dilation current at `opposed r` is nonzero for every `0 < r < r₀`. By `selected_dilation_divergence` this conclusion is the statement `euclidean F r ≠ 0` on `(0, r₀)`. With the release's fields `shortDistance` and `positive` as the hypotheses: `headline_dilation_not_conserved` (`OnHeadline.lean`). | as above |
@@ -180,7 +183,7 @@ All names are in the namespace `PDTAdapters`.
 | `at_unitIn` | `TraceStep.lean` | For `T.respects S`, `T.Hierarchy` and `x ∈ conf (n+1)`: the unit label `S.unit d` in the front slot of `S.useAt T` drops out. This is the release's `YM.Table.at_unit` (`YM/Euclid/Lift.lean`) with the moments read in a second table; the proof follows the release's. |
 | `centered_front` | `TraceStep.lean` | For `T.respects S`, `T.Hierarchy` and `Points.cons y x ∈ conf 2`: against the spectator `theta T J`, the label `stressTrace J` in the front slot of `S.useAt T` reads the same as `theta T J`. |
 | `opposed_conf`, `opposed_conf_of_ne` | `TraceStep.lean` | `opposed r ∈ conf 2` for `0 < r`, and for every `r ≠ 0`. |
-| `polStress_trace`, `free_stressTrace` | `FreeControl.lean` | The diagonal sum of the release's `Maxwell.Free.polStress G` is `0`; `stressTrace (Maxwell.Free.original F) = 0`. The first is the statement of the release's `YM.Trace.trace_free` (`YM/Trace/FreeScalar.lean`), proved here a second time, with a different proof, because that module is not among those built for this library. It is the release's result. In a scratch file run for record 4 of `BUILD.txt`, against a restored compiled build of the release, `example : @PDTAdapters.polStress_trace = @YM.Trace.trace_free := rfl` compiles: the two statements are definitionally equal (they differ only in whether `G` is explicit). |
+| `polStress_trace`, `free_stressTrace` | `FreeControl.lean` | The diagonal sum of the release's `Maxwell.Free.polStress G` is `0`; `stressTrace (Maxwell.Free.original F) = 0`. The first is the statement of the release's `YM.Trace.trace_free` (`YM/Trace/FreeScalar.lean`), proved here a second time, with a different proof, because that module is not among those the build under "Build" compiles. It is the release's result. In a scratch file run for record 4 of `BUILD.txt`, against a restored compiled build of the release, `example : @PDTAdapters.polStress_trace = @YM.Trace.trace_free := rfl` compiles: the two statements are definitionally equal (they differ only in whether `G` is explicit). |
 
 The proofs of `conformal_divergence` and `conformal_divergenceIn` follow the release's proof of
 `YM.Work.A01.divergence` (`YM/Work/A01/Conserve.lean`) with its last step replaced: after the
@@ -201,19 +204,16 @@ limit of `s⁸ (log s⁻¹)² • euclidean F s` as `s → 0⁺` is `Trace.Verse
 | `PDTAdapters.headline_dilation_rate` | `s⁸ (log s⁻¹)²` times the divergence of the dilation current at `opposed s` (as in `selected_dilation_divergence`) tends to `Trace.Verse.award G` as `s → 0⁺`. From `H.shortDistance`, by `selected_dilation_rate`. |
 | `PDTAdapters.headline_dilation_not_conserved` | There is `r₀ > 0` such that that divergence at `opposed r` is nonzero for every `0 < r < r₀`. From `H.shortDistance` and `H.positive`, by `selected_dilation_not_conserved`. |
 | `PDTAdapters.headline_euclidean_ne_zero` | There is `r₀ > 0` such that `euclidean F r ≠ 0` for every `0 < r < r₀`. From `H.shortDistance` and `H.positive`, by `rate_ne_zero`. |
-| `PDTAdapters.headline_dilation_not_conserved_at` | There is `r₀ > 0` such that, for one point `x` and every `y` with `y ≠ x 0` and `‖y - x 0‖ < r₀`, the divergence at `y` of `currentIn (selected F) F.sector.energy (fun z => z) x` with the spectator label `center F` is nonzero. From `headline_euclidean_ne_zero` and `selected_dilation_divergence_at`. |
+| `PDTAdapters.headline_dilation_not_conserved_at` | There is `r₀ > 0` such that, for every one-point configuration `x` and every `y` with `y ≠ x 0` and `‖y - x 0‖ < r₀` (the same `r₀` for all `x`), the divergence at `y` of `currentIn (selected F) F.sector.energy (fun z => z) x` with the spectator label `center F` is nonzero. From `headline_euclidean_ne_zero` and `selected_dilation_divergence_at`. |
 
 The module needs the release module `YM.Nonperturbative.HeadlineSpec`, whose import closure is
 6,563 of the release's modules; the build under "Build" compiles 441, so it does not check this
-module. There are two ways to check it: compile that closure from source in the checkout of
-"Build" and then `PDTAdapters.OnHeadline` (not done for this repository); or restore the public
-compiled build `lean-build-3456e5e` of the repository `scottnarmstrong/yang-mills-informalization`
-(compiled `.olean` files of the release, built on Linux x86-64) and compile this library against
-it with `lean -o`, which is what record 4 of `BUILD.txt` did. In that record the release's
+module. Record 4 of `BUILD.txt` checks it by compiling this library with `lean -o` against the
+public compiled build `lean-build-3456e5e` of the release (published by
+`scottnarmstrong/yang-mills-informalization`, built on Linux x86-64); compiling that closure from
+source in the checkout of "Build" would also check it and was not done. In that record the release's
 modules were loaded from the restored files, not compiled from source on the machine used.
-`AxiomsOnHeadline.lean` prints the axioms of the four theorems. The release's
-`YangMills.constructed` states `Headline.TraceExclusions F` for its witness (`Construction.lean`,
-read in source; that module is not among those `OnHeadline.lean` was checked against).
+`AxiomsOnHeadline.lean` prints the axioms of the four theorems.
 
 ## What is not proved
 
@@ -225,8 +225,7 @@ read in source; that module is not among those `OnHeadline.lean` was checked aga
   the release the hypothesis with `c = Trace.Verse.award G`, and `0 < Trace.Verse.award G`, are
   the fields `shortDistance` and `positive` of `YM.Nonperturbative.Headline.TraceExclusions F`.
   The theorems of `PDTAdapters/OnHeadline.lean` take `TraceExclusions F` itself as their
-  hypothesis and use those two fields; they are checked only against the restored compiled build
-  of record 4, not by the build under "Build". This library does not prove `TraceExclusions F`
+  hypothesis and use those two fields. This library does not prove `TraceExclusions F`
   for any `F`, and it constructs no `F : Spec.Final C f S`. `YangMills.constructed`
   (`Construction.lean`, line 28) asserts `TraceExclusions F` of the `F` whose existence it
   proves; that module was not loaded for this library, so the step from that theorem to the
