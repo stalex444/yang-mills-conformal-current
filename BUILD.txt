@@ -9,13 +9,16 @@ checkout of the release, with two lines appended to the release's lakefile.toml:
     [[lean_lib]]
     name = "PDTAdapters"
 
-This file holds four records, all made on 2026-11-13:
+This file holds five records, all made on 2026-11-13:
 
+  RECORD 5  the commit that follows 82926626: adds PDTAdapters/OnConstructed.lean and
+            AxiomsOnConstructed.lean, compiled with `lean -o` against the restored compiled build
+            of the release, as in record 4. It comes first.
   RECORD 4  the commit that follows 359eaf6d: adds PDTAdapters/OnHeadline.lean and
             AxiomsOnHeadline.lean, and compiles every module of the library with `lean -o`
             against a restored compiled build of the release, without Lake; and the commit after
             it (corrections after review: one docstring of PDTAdapters/OnHeadline.lean and the
-            text files), with pass C below. It comes first.
+            text files), with pass C below.
   RECORD 3  the commit that follows 52b2bd2c: docstring changes in PDTAdapters/OnFinal.lean and
             PDTAdapters/FreeControl.lean, with the rebuild and checks run for it.
             The AXIOMS listing of record 2 and its HASHES table (updated for the two files) apply
@@ -25,6 +28,127 @@ This file holds four records, all made on 2026-11-13:
   RECORD 1  commit 41856c2f, the earlier public commit, including its clean-checkout build. It is
             kept below as it was written; its counts, job numbers, hashes and line numbers are
             those of that commit.
+
+================================================================================================
+RECORD 5 -- PDTAdapters/OnConstructed.lean, against the restored compiled build (2026-11-13,
+            19:19Z to 19:32Z)
+================================================================================================
+
+Machine: macOS 26.6.2, arm64 (Apple M4). Lean (version 4.32.0, arm64-apple-darwin24.6.0, commit
+8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release). Lake was not used in this record.
+
+What changed since commit 82926626:
+  - added: PDTAdapters/OnConstructed.lean (4 theorems), NOT imported by the root. It imports
+    PDTAdapters.OnHeadline and the release's root-level modules Construction and ConcreteSU2.
+  - added: AxiomsOnConstructed.lean, the `#print axioms` lines of the four theorems.
+  - README.md, NOTICE, this file (this record; the index above, where the entry of record 4 no
+    longer says that it comes first; two lines of the list "Not done" of record 4) and
+    SHA256SUMS.
+  No other Lean file changed; the build under "Build" in README.md is unaffected.
+
+The release's compiled modules: the public compiled build "lean-build-3456e5e", as in record 4.
+The restore directory holds 9,470 .olean files (counted in this record): 9,457 under YM/ and 13
+root-level modules (Challenge, ChallengeSpec, ConcreteSU2, Construction, ContactBridge,
+ContactSpec, HierarchyBridge, PublicTheory, PublicView, PublicWilson, Solution, TraceBridge,
+WilsonBridge). SHA-256 of the archive, as written in four digest files made while the archive was
+read on 2026-11-13 (15:12Z to 18:46Z), each equal to the checksum published with the build:
+07c145c36a45948ac55044a98d5626c201fe7ad6214d627a0739694c8e464707 (not recomputed in this record).
+Limits, as in record 4:
+  - a restore of compiled .olean files only: no .ilean, no C files, no Lake traces;
+  - the release's modules, Construction and ConcreteSU2 among them, were NOT compiled from source
+    on this machine, and their declarations were not re-checked by a kernel replay here; they
+    were loaded as compiled;
+  - the dependencies are the compiled packages of the working checkout of the release, as in
+    record 4.
+
+Commands. Run from the root of this repository, one Lean process at a time, with
+  LEAN_PATH = <out> : <restore>/lib/lean : the .lake/build/lib/lean directories of eight of the
+              release's nine packages (all but Cli)
+  lean -R . -DmaxHeartbeats=0 -DmaxRecDepth=4096 -o <out>/<Module/Path>.olean <Module/Path>.lean
+(<out> an empty output directory). Times are wall-clock, from /usr/bin/time -l, which also gives
+the peak resident set size. The modules that OnConstructed.lean needs, compiled from source,
+19:19:36Z to 19:19:58Z:
+    PDTAdapters/Conformal.lean      exit 0, no output, 2.3 s
+    PDTAdapters/Divergence.lean     exit 0, no output, 2.9 s
+    PDTAdapters/General.lean        exit 0, no output, 2.8 s
+    PDTAdapters/TraceStep.lean      exit 0, no output, 2.1 s
+    PDTAdapters/OnHeadline.lean     exit 0, no output, 11.2 s, peak 7.6 GB
+  PDTAdapters/OnConstructed.lean:
+    19:20:55Z exit 1: "Ambiguous term" for `Axis` and `Points` in the appended conjuncts (both
+              YM and YangMills declare them, and both namespaces are open); the file as committed
+              writes YM.Axis and YM.Points there;
+    19:21:25Z exit 0, no output, 21.5 s;
+    ended 19:26:36Z (after a change to the module docstring) exit 0, no output, 13.5 s;
+    ended 19:31:04Z (after a second change to the module docstring; the file as committed)
+              exit 0, no output (no warning, no linter note), 31.7 s, peak 8.6 GB.
+  Every check below was run in two passes, 19:26:36Z to 19:27:13Z and 19:31:04Z to 19:31:41Z
+  (the second against the file as committed), with the same exit codes and output.
+  lean -R . -DmaxHeartbeats=0 -DmaxRecDepth=4096 AxiomsOnConstructed.lean
+    19:31:04Z exit 0, 4.2 s, 4 lines:
+'PDTAdapters.constructed_dilation' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.constructed_dilation_not_conserved' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.constructed_of_constructed_dilation' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.su2_dilation_not_conserved' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+THE STATEMENT TEXT. The statement of constructed_dilation was compared with Construction.lean,
+lines 15-31, line by line, by a script: lines 16 to 30 are identical, character for character;
+line 15 differs in the theorem's name only; line 31 ends in ` ∧`, followed by the two appended
+conjuncts, where the release's ends in ` := by`.
+
+KERNEL CHECKS (scratch files importing PDTAdapters.OnConstructed, not part of this repository;
+each about 4 s and about 8 GB peak):
+  (i) example : type_of% @PDTAdapters.constructed_of_constructed_dilation.{u,v}
+          = type_of% @YangMills.constructed.{u,v} := rfl
+      compiles (exit 0). Negative control: the same with constructed_dilation_not_conserved on
+      the left is rejected (exit 1, "Type mismatch").
+  (ii) The constants occurring in each proof term (read from the environment, not transitively):
+      constructed_dilation: YangMills.constructed, PDTAdapters.headline_dilation_rate and
+        PDTAdapters.headline_dilation_not_conserved_at among them;
+      constructed_dilation_not_conserved and constructed_of_constructed_dilation:
+        PDTAdapters.constructed_dilation, and not YangMills.constructed;
+      su2_dilation_not_conserved: PDTAdapters.constructed_dilation_not_conserved, YangMills.su2
+        and YangMills.su2Simple, and not YangMills.constructed.
+      So constructed_of_constructed_dilation derives the statement of YangMills.constructed from
+      constructed_dilation alone.
+  (iii) #check of the four theorems, of YangMills.constructed, of YangMills.su2
+      (`YangMills.su2 : YangMills.GaugeGroup`) and of YangMills.su2Simple
+      (`YangMills.su2Simple : YangMills.su2.IsSimple`): exit 0.
+
+THE INSTANCE AT SU(2). The release's ConcreteSU2.lean defines `YangMills.su2 : GaugeGroup` (its
+docstring: the defining complex two-dimensional representation of SU(2)) and proves
+`theorem su2Simple : su2.IsSimple := YM.Examples.SU2.simple`. su2_dilation_not_conserved is
+constructed_dilation_not_conserved at su2, su2Simple and b = 1.
+
+IMPORT CLOSURE. Counted in the loaded environment (Environment.header.moduleNames): a file
+importing Construction alone loads 20,376 modules, 9,456 of them under YM/ and 10 root-level
+modules of the release; a file importing PDTAdapters.OnConstructed loads 20,385, 9,457 under YM/
+and 12 root-level modules of the release (all 13 restored ones but Challenge). Counted from the
+import lines of the release's source at 3456e5e7, the same: the closure of Construction lacks
+only YM.Examples.SU2 under YM/, and that of ConcreteSU2 has all 9,457.
+
+HYPOTHESIS-DELETION CHECK (scratch files). Copies of constructed_dilation
+and of constructed_dilation_not_conserved, each with the binder `(hg : g.IsSimple)` deleted, and
+each with `(hb : 0 < b)` deleted, proofs unchanged, fail to elaborate (exit 1). First error:
+    constructed_dilation without hg:   "Unknown identifier `hg`" in the statement, at the release's
+                                       clause `Independent.Core.{u,v} (GaugeGroup.coreSimple hg)`
+                                       (a second at its use in the proof);
+    constructed_dilation without hb:   "Unknown identifier `hb`" at YangMills.constructed g hg b hb;
+    constructed_dilation_not_conserved without hg, and without hb: "Unknown identifier" for the
+                                       deleted name, at constructed_dilation g hg b hb.
+  These show that each hypothesis is used; they do not show that a statement fails without it.
+
+Not done, not checked in this record:
+  - no compilation of the release's modules from source; no Lake build; no kernel replay of the
+    release's declarations (leanchecker was not run); no Comparator run;
+  - Det.lean, OnFinal.lean, FreeControl.lean and PDTAdapters.lean were not recompiled (their
+    sources are those of record 4, and OnConstructed.lean does not import them);
+  - nothing is stated at coincident points;
+  - Linux was not tried.
+
+HASHES of the two added files (sha256); the other Lean files are those of record 4:
+  131d974df8f90394029b2a04ed58aa48cc4b188694d3c53731adbc4ca370e555  PDTAdapters/OnConstructed.lean
+  5e0ded7c0d626a7deee03db046d7aa14b56b8c6f9d312d96014f7ffff770f01a  AxiomsOnConstructed.lean
+SHA256SUMS lists every file of this repository except itself.
 
 ================================================================================================
 RECORD 4 -- PDTAdapters/OnHeadline.lean, against a restored compiled build (2026-11-13,
@@ -148,7 +272,7 @@ Not done, not checked in this record:
   - the clean-checkout procedure of README.md, section "Build", was not re-run;
   - YangMills.constructed (Construction.lean) was read in source only: no file of this record
     imports Construction, so the step from that theorem to the hypothesis of the theorems of
-    OnHeadline.lean has not been checked in Lean;
+    OnHeadline.lean was not checked in Lean in this record (record 5 checks it);
   - Linux was not tried.
 
 HASHES of the two added files (sha256), at the corrections commit; the other Lean files are those

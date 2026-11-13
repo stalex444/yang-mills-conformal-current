@@ -40,4 +40,11 @@ distribution:
     headline_dilation_rate is the text of its field shortDistance (lines
     93-94) with the divergence of the dilation current in place of
     euclidean F s.
+  PDTAdapters/OnConstructed.lean, constructed_dilation: the statement is the
+    statement text of YangMills.constructed (Construction.lean, lines 15-31)
+    with two conjuncts appended, the conclusions of headline_dilation_rate
+    and headline_dilation_not_conserved_at for the same witness.
+    constructed_of_constructed_dilation has the statement of that theorem,
+    written as the type of its application. su2_dilation_not_conserved uses
+    YangMills.su2 and YangMills.su2Simple (ConcreteSU2.lean).
 The other statements and proofs are this library's.
