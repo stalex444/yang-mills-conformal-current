@@ -9,7 +9,7 @@ The name `PDTAdapters` is explained under "Provenance and licences".
 
 Every theorem here is a consequence of the release's definitions and theorems; none is used by, or changes, any proof of the release.
 
-Every declaration depends on `propext`, `Classical.choice` and `Quot.sound` only (`Axioms.lean`, `AxiomsOnHeadline.lean`, `AxiomsOnConstructed.lean`; the output is in `BUILD.txt`). `lake build PDTAdapters`, in a checkout of the release prepared as under "Build", prints the axioms of 34 of the theorems. The release's `YM.Work.A01.divergence` is the case `∂·V = 0` of identity 1 below (an `example … := rfl` in `PDTAdapters/Divergence.lean` checks that the two statements are definitionally equal), and every clause of the release's `YangMills.constructed` is a conjunct of `PDTAdapters.constructed_dilation` (`PDTAdapters.constructed_of_constructed_dilation`).
+Every declaration depends on `propext`, `Classical.choice` and `Quot.sound` only (`Axioms.lean`, `AxiomsOnHeadline.lean`, `AxiomsOnConstructed.lean`, `AxiomsLieDim.lean`; the output is in `BUILD.txt`). `lake build PDTAdapters`, in a checkout of the release prepared as under "Build", prints the axioms of 34 of the theorems. The release's `YM.Work.A01.divergence` is the case `∂·V = 0` of identity 1 below (an `example … := rfl` in `PDTAdapters/Divergence.lean` checks that the two statements are definitionally equal), and every clause of the release's `YangMills.constructed` is a conjunct of `PDTAdapters.constructed_dilation` (`PDTAdapters.constructed_of_constructed_dilation`).
 
 ## The results
 
@@ -86,13 +86,13 @@ proved".
 
 ## How the statements are written
 
-The statements are written with the release's definitions (`YM.*`, and in `PDTAdapters/OnConstructed.lean` the release's root-level `YangMills.*`) and two definitions of this
+The statements are written with the release's definitions (`YM.*`, and in `PDTAdapters/OnConstructed.lean` and `PDTAdapters/LieDim.lean` the release's root-level `YangMills.*`) and two definitions of this
 library: `PDTAdapters.conformal`, the conformal Killing equation, and `PDTAdapters.currentIn`,
 the release's formula for the current with the moments read in a second table (equal to the
 release's `current` on the own table, by `rfl`). The own-table theorems of
 `PDTAdapters/Divergence.lean`, `PDTAdapters/OnFinal.lean` and `PDTAdapters/FreeControl.lean` are
 about the release's `current` itself; the per-table, per-phase and selected-phase theorems of
-`PDTAdapters/General.lean`, `PDTAdapters/TraceStep.lean`, `PDTAdapters/OnFinal.lean`, `PDTAdapters/OnHeadline.lean` and `PDTAdapters/OnConstructed.lean` are about `currentIn`. No Lean file of the release is modified; how the library is compiled is under "Build".
+`PDTAdapters/General.lean`, `PDTAdapters/TraceStep.lean`, `PDTAdapters/OnFinal.lean`, `PDTAdapters/OnHeadline.lean`, `PDTAdapters/OnConstructed.lean` and `PDTAdapters/LieDim.lean` are about `currentIn`. No Lean file of the release is modified; how the library is compiled is under "Build".
 
 ## Conventions (the release's definitions used)
 
@@ -138,6 +138,13 @@ environment of `PDTAdapters/OnHeadline.lean` (all but `YM.Trace.trace_free` and
 `YM.Trace.FreeScalar` (record 4 of `BUILD.txt`, "NAMES"). `YangMills.constructed`, and the
 names `YangMills.GaugeGroup`, `YangMills.su2` and `YangMills.su2Simple` used in "On the release's
 construction theorem", resolve in the environment of `PDTAdapters/OnConstructed.lean` (record 5).
+`YM.Trace.Over.b0`, `YM.Trace.Over.force_b`, `YM.Gauge.casimir_pos`, `YM.Next.Foundations.SUtwo`
+and `YangMills.GaugeGroup.coreSimple` resolve in the environment of `PDTAdapters/LieDim.lean` (the
+file compiles with them). `YM.Trace.wick_norm`, cited below but not used by the file, resolves in
+the same environment (checked by `#check` in a review file importing `PDTAdapters.LieDim`). The
+release's `award_eq` (`TraceBridge.lean`) is private and is cited by file and line only;
+`YangMills.Hierarchy.TraceTest` (`ChallengeSpec.lean`) and `YangMills.publicTrace`
+(`TraceBridge.lean`) are cited by file and line.
 
 Two definitions are added by this library for its statements (two more, the abbreviation `frontCaps` and
 the definition `frontIn` in `PDTAdapters/General.lean`, are helpers for the proofs):
@@ -257,6 +264,54 @@ The same counts were read in the loaded environment (record 5 of `BUILD.txt`). T
 "Build" compiles 441 of these modules, so it does not check this module. Record 5 of `BUILD.txt` checks it by compiling it with `lean -o` against the same public compiled build `lean-build-3456e5e` of the release, as in record 4 (limits under "What is not proved"). Loading the environment took about 8 GB of resident memory.
 `AxiomsOnConstructed.lean` prints the axioms of the four theorems.
 
+### The constant `Trace.Verse.award` and the dimension of the Lie algebra
+
+`PDTAdapters/LieDim.lean` (not imported by the root; it imports `PDTAdapters.OnConstructed`)
+proves that the rate constant of the divergence of the dilation current is three times the
+dimension of the gauge Lie algebra over `π⁴`: for every `F` with `Headline.TraceExclusions F`,
+and so for the release's construction at every simple gauge group; at the release's SU(2) it is
+`9 / π⁴`.
+
+The release defines `YM.Trace.Verse.award G := 12 * (d2 G ^ 2 / b0 G ^ 2) * G.lieDim / π ^ 4`
+(`YM/TraceExtension/Verse/Day.lean`, line 41), with `d2 G = -b0 G / 2` (`force_b`) and
+`b0 G = 11 * G.casimir / (48 * π ^ 2)` (both in `YM/TraceExtension/Chart/Nectar.lean`).
+`G.lieDim` is `Module.finrank ℝ G.Alg` (`YM/Gauge/Colors.lean`, line 41), the dimension over `ℝ`
+of the release's Lie algebra `G.lie` of the group (the real subspace of complex matrices `X` with
+`exp (t • X)` in the group for every real `t`; `YM/Gauge/Lie.lean`, lines 26 and 126). If `G.casimir ≠ 0`, then `b0 G ≠ 0` and
+`award G = 3 * G.lieDim / π ^ 4`; for a simple `G` the Casimir is positive
+(`YM.Gauge.casimir_pos`). The release proves this value for `g.core` of a simple
+`YangMills.GaugeGroup` as the private theorem `award_eq` (`TraceBridge.lean`, lines 24–33), and
+inline in a proof (`YM/TraceExtension/Link/Rad.lean`, lines 98–100). Its public specification
+states the same value as the limit of `r⁸ (log r⁻¹)²` times the trace two-point function
+`traceTwo` (`ChallengeSpec.lean`, lines 172–174, the structure `Hierarchy.TraceTest`), which the
+release's `publicTrace` (`TraceBridge.lean`, line 35) proves from `TraceExclusions`. The value
+also appears in the lemma `YM.Trace.wick_norm`
+(`YM/TraceExtension/Foundation/Constant.lean`, lines 38–39), for
+`quad (Bel L) x (fun _ => fromPol (Bel L) (square4 G))` at two distinct points `x 0 ≠ x 1`, whose
+right side at line 39 reads `↑(3*(G.lieDim:ℝ)/Real.pi^4* (‖x 0-x 1‖^8)⁻¹ : ℝ)`. This module
+states the value as a public theorem for every `YM.Gauge` with nonzero Casimir, and carries it to
+the rate of the divergence of the dilation current (`headline_dilation_rate`).
+
+| name | statement |
+|------|-----------|
+| `PDTAdapters.award_eq_three_mul_lieDim_of_casimir_ne_zero` | For `G` with `G.casimir ≠ 0`: `Trace.Verse.award G = 3 * G.lieDim / π ^ 4`. |
+| `PDTAdapters.award_eq_three_mul_lieDim` | For `G` with `G.Simple`: the same, from the previous theorem by `YM.Gauge.casimir_pos`. |
+| `PDTAdapters.award_eq_zero_of_casimir_eq_zero` | A control: if `G.casimir = 0`, then `b0 G = 0` and the release's definition gives `Trace.Verse.award G = 0` (division by zero in `ℝ` is `0`). So the value `3 * G.lieDim / π ^ 4` needs `G.casimir ≠ 0`. No `G` with `G.casimir = 0` and `G.lieDim ≠ 0` is constructed here. |
+| `PDTAdapters.headline_dilation_rate_lieDim` | For `H : Headline.TraceExclusions F` (no further hypothesis on `G`: `H.positive` gives `award G ≠ 0`, hence `G.casimir ≠ 0`): `headline_dilation_rate` with the limit written `3 * G.lieDim / π ^ 4`. An `example` in the file checks in the kernel that its statement is that of `headline_dilation_rate` with `Trace.Verse.award G` rewritten by `award_eq_three_mul_lieDim_of_casimir_ne_zero`. |
+| `PDTAdapters.constructed_dilation_rate_lieDim` | For `g : YangMills.GaugeGroup` with `g.IsSimple`, and `0 < b`: there is `C : YM.Family g.core` with penalty `b` and `C.Makes` such that, for every order `p`, there are `q`, `S` and `F : Final C (p.refine q) S` with `Headline.TraceExclusions F` and the multiple `s⁸ (log s⁻¹)²` of the divergence of the dilation current at `opposed s` tends to `3 * g.core.lieDim / π ^ 4` as `s → 0⁺`. A projection of `constructed_dilation` (so the witness is that of `YangMills.constructed`), with `award_eq_three_mul_lieDim` at `GaugeGroup.coreSimple hg`. |
+| `PDTAdapters.su2_lieDim` | `YangMills.su2.core.lieDim = 3`: the Lie algebra of the release's SU(2) has dimension three. The three matrices of the release's `YM/Examples/SU2.lean` are shown to be a basis; the release's lemmas on them are private, so the file carries copies of them (see `NOTICE`). |
+| `PDTAdapters.su2_dilation_rate` | `constructed_dilation_rate_lieDim` at `YangMills.su2`, `YangMills.su2Simple` and `b = 1`, with the limit `9 / π ^ 4`. It has no hypothesis. |
+
+These are consequences of the release's definitions and theorems: the first three are arithmetic
+on the definition of `award`, and the others rewrite the limits of `headline_dilation_rate` and
+`constructed_dilation` with it. They fill no gap in the release's proof. As with
+`PDTAdapters/OnHeadline.lean` and `PDTAdapters/OnConstructed.lean`, the build under "Build" does
+not check this module; record 6 of `BUILD.txt` checks it by compiling it with `lean -o` against
+the same restored public compiled build `lean-build-3456e5e` of the release: the release's modules
+were loaded as compiled, not compiled from source on the machine used, and their declarations
+were not re-checked by a kernel replay. Loading the environment took about 8.8 GB of resident
+memory. `AxiomsLieDim.lean` prints the axioms of the seven theorems.
+
 ## What is not proved
 
 - **The short-distance rate for an `F` not given with `TraceExclusions F`.**
@@ -269,13 +324,13 @@ The same counts were read in the loaded environment (record 5 of `BUILD.txt`). T
   current, is nonzero. For the `F` of the release's `YangMills.constructed` the hypothesis is a
   clause of that theorem (`Construction.lean`, line 28), and the conclusions hold
   (`constructed_dilation`).
-- **A from-source check of `OnHeadline.lean` and `OnConstructed.lean`.** Records 4 and 5 of
-  `BUILD.txt` compile this library's modules with `lean -o` against the restored public compiled
+- **A from-source check of `OnHeadline.lean`, `OnConstructed.lean` and `LieDim.lean`.** Records 4
+  to 6 of `BUILD.txt` compile this library's modules with `lean -o` against the restored public compiled
   build `lean-build-3456e5e` of the release: the release's modules, `HeadlineSpec`,
   `Construction` and `ConcreteSU2` among them, were loaded from the restored files, not compiled
   from source on the machine used, and their declarations were not re-checked by a kernel
   replay. Compiling their import closure from source in the checkout of "Build" would also check
-  these two modules and was not done.
+  these three modules and was not done.
 - **Anything at coincident points.** Every statement about correlators is made at configurations in `conf`, where all points are distinct: pointwise derivative identities, and limits as `s → 0⁺` and non-vanishing of quantities at such configurations. There is no contact
   term and no distributional extension of the identities across coinciding points.
 - **A Ward identity.** None of these statements is a Ward identity, contact or dilation: there is
@@ -386,9 +441,10 @@ targets, which is a much larger job.
 
 What gets built: by the import lines, 411 of the release's modules for `lake build PDTAdapters`
 and 30 more for `PDTAdapters.FreeControl` (441 of the 9,457 files under `YM/`), plus the eight
-Lean files of this library other than `PDTAdapters/OnHeadline.lean` and
-`PDTAdapters/OnConstructed.lean`, which these targets do not build (see "On the release's
-`TraceExclusions`" and "On the release's construction theorem"). `BUILD.txt` holds five
+Lean files of this library other than `PDTAdapters/OnHeadline.lean`,
+`PDTAdapters/OnConstructed.lean` and `PDTAdapters/LieDim.lean`, which these targets do not build
+(see "On the release's `TraceExclusions`", "On the release's construction theorem" and "The
+constant `Trace.Verse.award` and the dimension of the Lie algebra"). `BUILD.txt` holds six
 records. Record 1 is a clean-checkout build of
 the earlier public commit `41856c2f` (2026-11-13, macOS arm64, 10 cores): the two builds took
 4 min 44 s and 57 s and produced 1.1 GiB under `.lake/build`; the dependencies under
@@ -398,8 +454,10 @@ clean-checkout run was not repeated); record 3 is the commit after it, which cha
 docstrings only, rebuilt the same way. In both, the two targets build with exit code 0 and the axiom listing is
 as stated below. Record 4 is the version that adds `PDTAdapters/OnHeadline.lean` and
 `AxiomsOnHeadline.lean`: there every module of this library was compiled with `lean -o` against
-the restored compiled build of the release, without Lake. Record 5 is this version, which adds
-`PDTAdapters/OnConstructed.lean` and `AxiomsOnConstructed.lean`, compiled the same way.
+the restored compiled build of the release, without Lake. Record 5 is the version that adds
+`PDTAdapters/OnConstructed.lean` and `AxiomsOnConstructed.lean`, compiled the same way. Record 6
+is this version, which adds `PDTAdapters/LieDim.lean` and `AxiomsLieDim.lean`, compiled the same
+way.
 The files built by the procedure above have not changed since record 3.
 
 The clean-checkout run of record 1 followed these steps with three departures that `BUILD.txt`
@@ -411,9 +469,9 @@ public repository; and the pinned dependencies came from an existing copy, so th
 `PDTAdapters.lean` ends with `#print axioms` lines, so `lake build PDTAdapters` prints the axioms
 of 34 of the theorems.
 
-### The compiled-build route (`OnHeadline.lean`, `OnConstructed.lean`)
+### The compiled-build route (`OnHeadline.lean`, `OnConstructed.lean`, `LieDim.lean`)
 
-Records 4 and 5 of `BUILD.txt` compile every module of this library with `lean -o`, without Lake, against the public
+Records 4 and 5 of `BUILD.txt` compile every module of this library other than `PDTAdapters/LieDim.lean` with `lean -o`, without Lake, and record 6 compiles `PDTAdapters/LieDim.lean` the same way, against the public
 compiled build of the release: the GitHub release
 [`lean-build-3456e5e`](https://github.com/scottnarmstrong/yang-mills-informalization/releases/tag/lean-build-3456e5e) of
 `scottnarmstrong/yang-mills-informalization`. Its archive `ym-build-3456e5e.tgz` is published in two parts with a
@@ -433,21 +491,23 @@ mkdir -p out/PDTAdapters                                          # lean -o does
 P=<release>/.lake/packages
 export LEAN_PATH=$PWD/out:<restore>/lib/lean:$P/LeanSearchClient/.lake/build/lib/lean:$P/Qq/.lake/build/lib/lean:$P/aesop/.lake/build/lib/lean:$P/batteries/.lake/build/lib/lean:$P/importGraph/.lake/build/lib/lean:$P/mathlib/.lake/build/lib/lean:$P/plausible/.lake/build/lib/lean:$P/proofwidgets/.lake/build/lib/lean
 lean432() { elan run leanprover/lean4:v4.32.0 lean "$@"; }
-for m in Conformal Det Divergence General TraceStep OnFinal FreeControl OnHeadline OnConstructed; do
+for m in Conformal Det Divergence General TraceStep OnFinal FreeControl OnHeadline OnConstructed LieDim; do
   lean432 -R . -DmaxHeartbeats=0 -DmaxRecDepth=4096 -o out/PDTAdapters/$m.olean PDTAdapters/$m.lean
 done
 lean432 -R . -DmaxHeartbeats=0 -DmaxRecDepth=4096 AxiomsOnHeadline.lean      # 4 lines
 lean432 -R . -DmaxHeartbeats=0 -DmaxRecDepth=4096 AxiomsOnConstructed.lean   # 4 lines
+lean432 -R . -DmaxHeartbeats=0 -DmaxRecDepth=4096 AxiomsLieDim.lean           # 7 lines
 ```
 
 ## Axioms
 
-Every declaration of the seven modules other than `PDTAdapters/OnHeadline.lean` and
-`PDTAdapters/OnConstructed.lean` (50 theorems, 3 definitions, 1 abbreviation) depends on
+Every declaration of the seven modules other than `PDTAdapters/OnHeadline.lean`,
+`PDTAdapters/OnConstructed.lean` and `PDTAdapters/LieDim.lean` (50 theorems, 3 definitions, 1 abbreviation) depends on
 `propext`, `Classical.choice` and `Quot.sound` only (`#print axioms` through `Axioms.lean`; the
 54 lines of output are in `BUILD.txt`). The four theorems of `PDTAdapters/OnHeadline.lean`
 depend on the same three axioms only (`AxiomsOnHeadline.lean`; record 4 of `BUILD.txt`), and so
-do the four theorems of `PDTAdapters/OnConstructed.lean` (`AxiomsOnConstructed.lean`; record 5).
+do the four theorems of `PDTAdapters/OnConstructed.lean` (`AxiomsOnConstructed.lean`; record 5),
+and the seven theorems of `PDTAdapters/LieDim.lean` (`AxiomsLieDim.lean`; record 6).
 The source contains no `sorry`, `admit`, `axiom`, `native_decide`, `unsafe`, `implemented_by` or
 `opaque`.
 
@@ -465,12 +525,14 @@ The source contains no `sorry`, `admit`, `axiom`, `native_decide`, `unsafe`, `im
 | `PDTAdapters/FreeControl.lean` | the free-Maxwell control (not imported by the root) |
 | `PDTAdapters/OnHeadline.lean` | the rate statements on the release's `TraceExclusions` (not imported by the root; needs `YM.Nonperturbative.HeadlineSpec`) |
 | `PDTAdapters/OnConstructed.lean` | the release's `YangMills.constructed` with the dilation-current clauses for the same witness; the instance at the release's SU(2) (not imported by the root; needs the release's modules `Construction` and `ConcreteSU2`) |
-| `Axioms.lean` | `#print axioms` for all 54 declarations of the seven modules other than `OnHeadline.lean` and `OnConstructed.lean`; a check file, not part of the library |
+| `PDTAdapters/LieDim.lean` | the release's `Trace.Verse.award` written as `3 * lieDim / π⁴`; the rate statements with that limit; the dimension of the Lie algebra of the release's SU(2) and the rate there (not imported by the root; needs what `OnConstructed.lean` needs) |
+| `Axioms.lean` | `#print axioms` for all 54 declarations of the seven modules other than `OnHeadline.lean`, `OnConstructed.lean` and `LieDim.lean`; a check file, not part of the library |
 | `AxiomsOnHeadline.lean` | `#print axioms` for the four theorems of `PDTAdapters/OnHeadline.lean`; a check file, not part of the library |
 | `AxiomsOnConstructed.lean` | `#print axioms` for the four theorems of `PDTAdapters/OnConstructed.lean`; a check file, not part of the library |
+| `AxiomsLieDim.lean` | `#print axioms` for the seven theorems of `PDTAdapters/LieDim.lean`; a check file, not part of the library |
 | `LICENSE`, `NOTICE` | the Apache License 2.0; the declarations that follow the release's statements or proof text |
 | `.gitignore` | ignores `.lake/` and `.DS_Store` |
-| `BUILD.txt`, `SHA256SUMS` | build records (five) and file hashes |
+| `BUILD.txt`, `SHA256SUMS` | build records (six) and file hashes |
 
 ## Provenance and licences
 
@@ -481,13 +543,14 @@ The source contains no `sorry`, `admit`, `axiom`, `native_decide`, `unsafe`, `im
   `THIRD_PARTY.md` carry the source attributions and the licences of the pinned dependencies.
   That README does not print its own repository's name or commit; both are taken here from the
   clone. The README of `yang-mills-group/YM` (commit `55ba9fc3`) refers to it as the separate
-  original-submission repository. This repository contains no file of the release.
+  original-submission repository. This repository contains no file of the release; it copies parts of one, as `NOTICE` lists.
 - **This add-on.** Several proofs here follow proof text of the release (`conformal_divergence`
   and `conformal_divergenceIn` up to their last step, `smooth_consIn`, `D_consIn`, `at_unitIn`,
   `selected_axis_shape`, and the one-line `cons_head_tail`); `polStress_trace` proves a
   statement of the release a second time, with a different proof; the statement of
   `constructed_dilation` is the statement text of the release's `YangMills.constructed` with two
-  conjuncts appended. **Licence of this add-on: the Apache License, Version 2.0 (`LICENSE`),
+  conjuncts appended; `PDTAdapters/LieDim.lean` carries copies of private declarations of the
+  release's `YM/Examples/SU2.lean` (namespace `PDTAdapters.SU2Lie`; see `NOTICE`). **Licence of this add-on: the Apache License, Version 2.0 (`LICENSE`),
   the licence of the release; `NOTICE` names the declarations that follow the release's
   statements or proof text.**
 - **Author.** Stephanie Alexander (ORCID [0009-0003-7727-2565](https://orcid.org/0009-0003-7727-2565)).

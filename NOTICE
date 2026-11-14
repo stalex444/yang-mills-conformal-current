@@ -2,7 +2,8 @@ PDTAdapters: an add-on library for the Wilson Yang–Mills source distribution
 Copyright (c) 2026 Stephanie Alexander
 Licensed under the Apache License, Version 2.0 (see LICENSE).
 
-This library is built against, and contains no file of, the Wilson Yang–Mills
+This library is built against, and contains no file of (but copies parts of
+YM/Examples/SU2.lean, listed below), the Wilson Yang–Mills
 source distribution (repository yang-mills-group/OpenAI-YM-20261028, commit
 3456e5e75cf8d4cd558955a5c7638fba2d68f464), whose project licence is the Apache
 License, Version 2.0, and whose NOTICE supplies its attributions.
@@ -53,4 +54,15 @@ distribution:
     su2_dilation_not_conserved begin with the opening text of the statement
     of YangMills.constructed (lines 16 and 18-19), the latter at
     YangMills.su2 and b = 1.
+  PDTAdapters/LieDim.lean, in the namespace PDTAdapters.SU2Lie: the private
+    abbreviations M, A, B, C and comm, the local macro entry, and the private
+    lemmas lies, a_in, b_in, ab, drank, c_in, trzero and express are copies
+    of the declarations of the same names in YM/Examples/SU2.lean (statements
+    and proofs; SUtwo written for that file's local abbreviation G). gens,
+    gens_li, gens_span and sutwo_lieDim are this library's.
+    award_eq_three_mul_lieDim_of_casimir_ne_zero and award_eq_three_mul_lieDim
+    state, for a YM.Gauge, the value that the distribution proves as the
+    private theorem award_eq (TraceBridge.lean, lines 24-33, for g.core of a
+    simple GaugeGroup) and inline (YM/TraceExtension/Link/Rad.lean, lines
+    98-100); the proof follows the step at Rad.lean.
 The other statements and proofs are this library's.

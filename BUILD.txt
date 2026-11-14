@@ -3,13 +3,16 @@ PDTAdapters -- build records
 An add-on library for the Lean source distribution in the repository
 yang-mills-group/OpenAI-YM-20261028 at commit 3456e5e75cf8d4cd558955a5c7638fba2d68f464
 ("the release"). Toolchain of the release: Lean v4.32.0, Mathlib
-81a5d257c8e410db227a6665ed08f64fea08e997. Not a standalone Lake package. The build of README.md, section "Build" (records 1 to 3), compiles it inside a checkout of the release, with two lines appended to the release's lakefile.toml (records 4 and 5 compile its modules with `lean -o` against a restored compiled build of the release, without Lake):
+81a5d257c8e410db227a6665ed08f64fea08e997. Not a standalone Lake package. The build of README.md, section "Build" (records 1 to 3), compiles it inside a checkout of the release, with two lines appended to the release's lakefile.toml (records 4 to 6 compile its modules with `lean -o` against a restored compiled build of the release, without Lake):
 
     [[lean_lib]]
     name = "PDTAdapters"
 
-This file holds five records, all made on 2026-11-13:
+This file holds six records, all made on 2026-11-13:
 
+  RECORD 6  the commit that follows 8b845977: adds PDTAdapters/LieDim.lean and AxiomsLieDim.lean,
+            compiled with `lean -o` against the restored compiled build of the release, as in
+            records 4 and 5. It comes first.
   RECORD 5  the commit that follows 82926626: adds PDTAdapters/OnConstructed.lean and
             AxiomsOnConstructed.lean, compiled with `lean -o` against the restored compiled build
             of the release, as in record 4; the commit after it (corrections after review:
@@ -18,7 +21,7 @@ This file holds five records, all made on 2026-11-13:
             "AFTER PASS B"; and the commit after that (corrections from a whole-repository read:
             the module docstring and one theorem docstring of PDTAdapters/OnHeadline.lean, and
             the text files), with pass C below; and the commit after that (README.md and this
-            file only, nothing recompiled), under "AFTER PASS C". It comes first.
+            file only, nothing recompiled), under "AFTER PASS C".
   RECORD 4  the commit that follows 359eaf6d: adds PDTAdapters/OnHeadline.lean and
             AxiomsOnHeadline.lean, and compiles every module of the library with `lean -o`
             against a restored compiled build of the release, without Lake; and the commit after
@@ -34,6 +37,139 @@ This file holds five records, all made on 2026-11-13:
             kept below as it was written; its counts, job numbers, hashes and line numbers are
             those of that commit.
 The 'Not done' lists of records 1 and 2 describe those commits; records 4 and 5 check several of their items.
+
+================================================================================================
+RECORD 6 -- PDTAdapters/LieDim.lean, against the restored compiled build (2026-11-13,
+            23:35:00Z to 23:55:46Z)
+================================================================================================
+
+Machine: macOS 26.6.2, arm64 (Apple M4). Lean (version 4.32.0, arm64-apple-darwin24.6.0, commit
+8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release). Lake was not used in this record.
+
+What changed since commit 8b845977:
+  - added: PDTAdapters/LieDim.lean (7 theorems, one `example`, and private declarations for the
+    SU(2) basis), NOT imported by the root. It imports PDTAdapters.OnConstructed only.
+  - added: AxiomsLieDim.lean, the `#print axioms` lines of the seven theorems.
+  - (README.md, NOTICE, this file and SHA256SUMS are updated in the same commit.)
+  No other Lean file changed; the build under "Build" in README.md is unaffected.
+
+The release's compiled modules: the public compiled build "lean-build-3456e5e", as in records 4
+and 5 (the same restore directory; SHA-256 of the archive as written there, not recomputed in
+this record). Limits, as in records 4 and 5:
+  - a restore of compiled .olean files only: no .ilean, no C files, no Lake traces;
+  - the release's modules, Construction and ConcreteSU2 among them, were NOT compiled from source
+    on this machine, and their declarations were not re-checked by a kernel replay here; they
+    were loaded as compiled;
+  - the dependencies are the compiled packages of the working checkout of the release, as in
+    record 4.
+
+Commands. Run from the root of this repository, one Lean process at a time, with the LEAN_PATH
+composition of records 4 and 5, and
+  lean -R . -DmaxHeartbeats=0 -DmaxRecDepth=4096 -o <out>/<Module/Path>.olean <Module/Path>.lean
+(`lean` the binary of the toolchain leanprover/lean4:v4.32.0). <out> was a copy of an output
+directory holding the compiled Conformal, Divergence, General, TraceStep, OnHeadline and
+OnConstructed modules, compiled from source earlier the same day (23:19:10Z to 23:21:43Z, all
+exit 0, no output) from a clone of this repository at 8b845977; the six sources are identical
+(cmp) to those of the working copy. Times are wall-clock, from /usr/bin/time -l, which also
+gives the peak resident set size.
+  PDTAdapters/LieDim.lean, earlier versions (six theorems; `h : G.Simple` on
+  headline_dilation_rate_lieDim):
+    23:35:00Z exit 0, no output, 59.9 s, peak 8.6 GB (a first version with the first four theorems
+              and the `example`; no SU(2) section);
+    23:38:31Z exit 1 (the SU(2) section added): "unknown universe level `v`" at the two uses of
+              `.{u,v}` in su2_dilation_rate (the `universe u v` line had been left out where the
+              namespace is reopened); the file as it now stands declares it there;
+    23:39:03Z exit 0, no output, 8.5 s, peak 8.8 GB;
+    23:39:45Z (after a change to the module docstring; sha256 466e7439...0968) exit 0, no output
+              (no warning, no linter note), 22.6 s, peak 8.8 GB.
+  A separate review of that version recompiled it (exit 0, 34.7 s, peak 8.8 GB) and found that
+  the statements could be strengthened (see HYPOTHESIS-DELETION CHECK). The version recorded here
+  adds award_eq_three_mul_lieDim_of_casimir_ne_zero, derives award_eq_three_mul_lieDim from it,
+  drops `h : G.Simple` from headline_dilation_rate_lieDim, and rewrites the control's docstring.
+  PDTAdapters/LieDim.lean, the file as it now stands:
+    23:55:00Z exit 0 (exit code read at the run; not logged), no output (no warning, no linter
+              note), 41.6 s, peak 8.78 GB.
+  lean -R . -DmaxHeartbeats=0 -DmaxRecDepth=4096 AxiomsLieDim.lean
+    23:55:42Z exit 0 (exit code read at the run; not logged), 4.0 s, peak 8.21 GB, 7 lines:
+'PDTAdapters.award_eq_three_mul_lieDim_of_casimir_ne_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.award_eq_three_mul_lieDim' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.award_eq_zero_of_casimir_eq_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.headline_dilation_rate_lieDim' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.constructed_dilation_rate_lieDim' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.su2_lieDim' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PDTAdapters.su2_dilation_rate' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+THE STATEMENT AGAINST headline_dilation_rate. The `example` at the end of the first part of
+PDTAdapters/LieDim.lean, stating
+    type_of% (headline_dilation_rate_lieDim F H) = type_of% (headline_dilation_rate F H)
+and closed by rewriting with award_eq_three_mul_lieDim_of_casimir_ne_zero (the hypothesis
+`G.casimir ≠ 0` obtained from `H.positive` and award_eq_zero_of_casimir_eq_zero), compiles: the
+two statements are the same proposition once `Trace.Verse.award G` is rewritten (they are not
+syntactically equal: `award G` unfolds to `12 * (d2 G ^ 2 / b0 G ^ 2) * G.lieDim / π ^ 4`).
+
+KERNEL CHECKS (a scratch file importing PDTAdapters.LieDim, not part of this repository; run for
+the earlier version, sha256 466e7439...0968, and NOT re-run for the file as it now stands):
+  (i) Theorem constants occurring directly in each proof term (read from the environment, not
+      transitively): not re-run for the file as it now stands. In the file as it now stands,
+      award_eq_three_mul_lieDim is derived from award_eq_three_mul_lieDim_of_casimir_ne_zero,
+      and headline_dilation_rate_lieDim rewrites with the latter (read in the source, not in a
+      constant dump). For the earlier version: constructed_dilation_rate_lieDim
+      named PDTAdapters.constructed_dilation, PDTAdapters.award_eq_three_mul_lieDim and
+      YangMills.GaugeGroup.coreSimple, and not YangMills.constructed, which it uses through
+      constructed_dilation (whose proof term names YangMills.constructed);
+      award_eq_three_mul_lieDim named YM.Gauge.casimir_pos and YM.Trace.Over.force_b with
+      field_simp and positivity lemmas; su2_lieDim named only the private sutwo_lieDim of the
+      same file; su2_dilation_rate named PDTAdapters.constructed_dilation_rate_lieDim,
+      PDTAdapters.su2_lieDim, YangMills.su2Simple, one_pos and norm_num's lemmas for 3 * 3 = 9.
+  (ii) #check: `YangMills.su2 : YangMills.GaugeGroup`;
+      `PDTAdapters.su2_lieDim : YangMills.su2.core.lieDim = 3`;
+      `YM.Trace.wick_norm` resolves (review file), its right side
+      `↑(3 * ↑G.lieDim / Real.pi ^ 4 * (‖x.ofLp 0 - x.ofLp 1‖ ^ 8)⁻¹)`.
+
+HYPOTHESIS-DELETION CHECK. (a) In the earlier version, a copy of award_eq_three_mul_lieDim with
+the binder `(h : G.Simple)` deleted, proof unchanged, failed to elaborate (exit 1): "Unknown
+identifier `h`" at `YM.Gauge.casimir_pos h`. That shows the proof used `h`, not that the
+statement needs it. (b) The review proved the statement with `G.Simple` weakened to
+`G.casimir ≠ 0`, and proved headline_dilation_rate_lieDim with `h` deleted (from `H.positive`),
+both on [propext, Classical.choice, Quot.sound] (the second at universes 0, 0); the version
+recorded here states both, the latter universe-polymorphic. (c) The control
+award_eq_zero_of_casimir_eq_zero shows that if `G.casimir = 0` then `award G = 0`, so the value
+`3 * G.lieDim / π ^ 4` needs `G.casimir ≠ 0`; no `G` with `G.casimir = 0` and `G.lieDim ≠ 0` is
+constructed here.
+
+THE SU(2) BASIS. The release's YangMills.su2 has core YM.Next.Foundations.SUtwo (the
+determinant-one matrices of U(2)); `su2.core = SUtwo` holds by `rfl` (checked in the review
+file), and the proof term of su2_lieDim is the private sutwo_lieDim. sutwo_lieDim uses
+Module.finrank of a basis built by Module.Basis.mk from the three matrices A, B, C of the
+release's YM/Examples/SU2.lean: linear independence over ℝ (read off the entries (0,0) and
+(0,1)), and spanning (the release's lemma `express`, copied). The release's lemmas on A, B, C are
+private; the copies in the namespace PDTAdapters.SU2Lie are the release's text, compared by a
+script (difflib) against YM/Examples/SU2.lean lines 14 to 76 with `G` read as `SUtwo`: they
+differ only in the spacing of ` := ` in the definitions of A, B and C, and in the declarations
+left out (the abbreviation G, and the lemmas bc, ca, negs and comb, not needed here). The private
+declarations of this file do not appear in AxiomsLieDim.lean; their axioms are included in those
+printed for su2_lieDim and su2_dilation_rate.
+
+THE RELEASE'S OWN STATEMENTS OF THE VALUE (read in the release's source, not compiled here): the
+private theorem award_eq (TraceBridge.lean, lines 24-33) and the public specification
+Hierarchy.TraceTest (ChallengeSpec.lean, lines 172-174) state `3 * finrank ℝ g.lieAlgebra / π^4`
+as, respectively, `award g.core` and the limit of `r^8 (log r⁻¹)^2 • traceTwo r`.
+
+Not done, not checked in this record:
+  - no compilation of the release's modules from source; no Lake build; no kernel replay of the
+    release's declarations (leanchecker was not run); no Comparator run;
+  - Det.lean, OnFinal.lean, FreeControl.lean and PDTAdapters.lean were not recompiled, and
+    Conformal, Divergence, General, TraceStep, OnHeadline and OnConstructed were not recompiled
+    in this record (their compiled files of 23:19Z to 23:21Z were used; sources identical);
+  - Axioms.lean, AxiomsOnHeadline.lean and AxiomsOnConstructed.lean were not re-run;
+  - the import-closure counts of record 5 were not re-read (LieDim imports nothing beyond
+    PDTAdapters.OnConstructed);
+  - nothing is stated at coincident points;
+  - Linux was not tried.
+
+HASHES (sha256) of the two added files:
+  28a0732d556b8040ef9c6d1e7512a7449ff7c7700dfee505ace1f8f3cb6b371c  PDTAdapters/LieDim.lean
+  5331756bf8e16b4f9aaac53811e4014d45030e5048f8dc59c09baa44e384aa77  AxiomsLieDim.lean
 
 ================================================================================================
 RECORD 5 -- PDTAdapters/OnConstructed.lean, against the restored compiled build (2026-11-13,
